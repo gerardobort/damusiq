@@ -10,16 +10,20 @@ var mongoose = require('mongoose'),
 exports.landing = function(req, res){
     var composerName = req.route.params.composerName;
     
-    mongoose.model('Composer').findOne({ uri: composerName }, function (err, doc) {
-        if (doc) {
-            res.render('composer-landing.html', {
-                title: 'PDF scores for free!',
-                doc: doc
-            });
-        } else {
-            res.send('composer not found');
-        }
-    });
+    mongoose.model('Composer')
+        .findOne({ uri: composerName })
+        .populate('categories')
+        .populate('opuses')
+        .exec(function (err, doc) {
+            if (doc) {
+                res.render('composer-landing.html', {
+                    title: 'PDF scores for free!',
+                    doc: doc
+                });
+            } else {
+                res.send('composer not found');
+            }
+        });
 };
 
 exports.opus = function(req, res){
