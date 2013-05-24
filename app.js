@@ -3,11 +3,13 @@
  */
 
 var express = require('express'),
+    http = require('http'),
+    path = require('path'),
+    fs = require('fs'),
+    mongoose = require('mongoose'),
     mainRoute = require('./routes/main'),
     composerRoute = require('./routes/composer'),
-    userRoute = require('./routes/user'),
-    http = require('http'),
-    path = require('path');
+    userRoute = require('./routes/user');
 
 var app = express();
 
@@ -30,10 +32,21 @@ if ('development' == app.get('env')) {
     app.use(express.errorHandler());
 }
 
+// mongo and models
+app.set('db', mongoose.connect(process.env.MONGOHQ_URL));
+var models_path = __dirname + '/models'
+fs.readdirSync(models_path).forEach(function (file) {
+    if (file.match(/\.js$/)) {
+        require(models_path+'/'+file);
+    }
+});
+
+// routes
 app.get('/', mainRoute.homepage);
 app.get('/users', userRoute.list);
-app.get('/:composer_name', composerRoute.landing);
-app.get('/:composer_name/:opus_name', composerRoute.opus);
+app.get('/:composerName', composerRoute.landing);
+app.get('/:composerName/:opusName', composerRoute.opus);
+
 
 http.createServer(app).listen(app.get('port'), function(){
     console.log('Express server listening on port ' + app.get('port') + ' on ' + app.get('env') + ' env.');

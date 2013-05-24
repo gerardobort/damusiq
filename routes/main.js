@@ -4,5 +4,5 @@
  */
 
 exports.homepage = function(req, res){
-    res.render('index.html', { title: 'PDF scores for free!' });
+    res.render('main-homepage.html', { title: 'PDF scores for free!' });
 };
