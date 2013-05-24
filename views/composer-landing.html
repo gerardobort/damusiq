@@ -6,18 +6,18 @@
 <p>wiki italian: <%= doc.get('wiki.it.content') %></p>
 
 <h2>Categories</h2>
-<p>
+<ul>
     <% doc.get('categories').forEach(function(cat, i) { %>
-    <a href="/composers/<%= cat.get('uri') %>"><%= cat.get('name') %></a>
+    <li><a href="/composers/<%= cat.get('uri') %>"><%= cat.get('name') %></a></li>
     <% }) %>
-</p>
+</ul>
 
 <h2>Opuses</h2>
-<p>
+<ul>
     <% doc.get('opuses').forEach(function(opus, i) { %>
-    <a href="/<%= doc.get('uri') %>/<%= opus.get('uri') %>"><%= opus.get('name') %> (<%= opus.get('scores').length %>)</a>
+    <li><a href="/<%= doc.get('uri') %>/<%= opus.get('uri') %>"><%= opus.get('name') %> (<%= opus.get('scores').length %>)</a></li>
     <% }) %>
-</p>
+</ul>
 
 <h2>Images</h2>
 <% (doc.get('images')||[]).forEach(function(img, i) { %>

@@ -44,8 +44,8 @@ fs.readdirSync(models_path).forEach(function (file) {
 // routes
 app.get('/', mainRoute.homepage);
 app.get('/users', userRoute.list);
-app.get('/:composerName', composerRoute.landing);
-app.get('/:composerName/:opusName', composerRoute.opus);
+app.get('/:composerUri', composerRoute.landing);
+app.get('/:composeruri/:opusUri', composerRoute.opus);
 
 
 http.createServer(app).listen(app.get('port'), function(){
