@@ -1,5 +1,4 @@
 <h1><%= doc.get('fullname') %></h1>
-<p>uri: <%= doc.get('uri') %></p>
 <p>birth: <%= doc.getBirthYear() %></p>
 <p>death: <%= doc.getDeathYear() %></p>
 <p>wiki english: <%= doc.get('wiki.en.content') %></p>
@@ -7,10 +6,9 @@
 <p>wiki italian: <%= doc.get('wiki.it.content') %></p>
 <p>
 <% (doc.get('categories')||[]).forEach(function(cat, i) { %>
-<a href="/composers/<% cat.uri %>"><%= cat.name %></a>
+<a href="/composers/<%= cat.uri %>"><%= cat.name %></a>
 <% }) %>
 </p>
 <% (doc.get('images')||[]).forEach(function(img, i) { %>
 <p><img src="<%= img %>"/></p>
 <% }) %>
-Composer Page!
