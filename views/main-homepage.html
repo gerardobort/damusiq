@@ -1,1 +1,6 @@
-Welcome to PDF Scores!
+<h1>Welcome to PDF Scores!</h1>
+<ul>
+    <% composers.forEach(function(doc, i) { %>
+    <li><a href="/<%= doc.get('uri') %>"><%= doc.get('fullname') %></a> <%= doc.get('birth') %></li>
+    <% }) %>
+</ul>

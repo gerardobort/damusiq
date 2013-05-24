@@ -9,7 +9,7 @@ var mongoose = require('mongoose'),
 
 var ComposerSchema = new Schema({
     id: ObjectId,
-    name: String,
+    uri: String,
     fullname: String
 });
 

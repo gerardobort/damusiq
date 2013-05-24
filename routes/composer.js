@@ -10,7 +10,7 @@ var mongoose = require('mongoose'),
 exports.landing = function(req, res){
     var composerName = req.route.params.composerName;
     
-    mongoose.model('Composer').findOne({ name: composerName }, function (err, doc) {
+    mongoose.model('Composer').findOne({ uri: composerName }, function (err, doc) {
         if (doc) {
             res.render('composer-landing.html', {
                 title: 'PDF scores for free!',
