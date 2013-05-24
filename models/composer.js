@@ -13,4 +13,13 @@ var ComposerSchema = new Schema({
     fullname: String
 });
 
+ComposerSchema.methods = {
+    getBirthYear: function () {
+        return new Date(this.get('birth')).getFullYear();
+    },
+    getDeathYear: function () {
+        return new Date(this.get('birth')).getFullYear();
+    },
+};
+
 mongoose.model('Composer', ComposerSchema, 'composer');
