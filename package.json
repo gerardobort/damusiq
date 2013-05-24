@@ -1,9 +1,0 @@
-{
-  "name": "pdf-scores",
-  "description": "pdf-scores.com node app by Gerardo Bort <gerardobort@gmail.com>",
-  "version": "0.0.1",
-  "private": true,
-  "dependencies": {
-    "express": "3.2.5"
-  }
-}
