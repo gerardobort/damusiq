@@ -1,12 +1,12 @@
 {
-  "name": "application-name",
+  "name": "pdf-scores",
+  "description": "pdf-scores.com node app by Gerardo Bort <gerardobort@gmail.com>",
   "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "node app.js"
   },
   "dependencies": {
-    "express": "3.2.5",
-    "jade": "*"
+    "express": "3.2.5"
   }
 }
