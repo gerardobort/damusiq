@@ -14,9 +14,7 @@ var OpusSchema = new Schema({
     _id: ObjectId,
     uri: String,
     name: String,
-    composer: [
-        { type: ObjectId, ref: 'Composer'}
-    ],
+    composer: { type: ObjectId, ref: 'Composer'},
     scores: [
         { type: ObjectId, ref: 'Score'}
     ]

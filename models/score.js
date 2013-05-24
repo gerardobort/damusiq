@@ -16,12 +16,8 @@ var ScoreSchema = new Schema({
     _id: ObjectId,
     uri: String,
     name: String,
-    composer: [
-        { type: ObjectId, ref: 'Composer'}
-    ],
-    opus: [
-        { type: ObjectId, ref: 'Opus'}
-    ],
+    composer: { type: ObjectId, ref: 'Composer'},
+    opus: { type: ObjectId, ref: 'Opus'},
     periods: [
         { type: ObjectId, ref: 'Period'}
     ],
