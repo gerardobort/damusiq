@@ -33,7 +33,7 @@ exports.opus = function(req, res){
     mongoose.model('Opus')
         .findOne({ uri: opusUri, 'composer.uri': composerUri })
         .populate('scores')
-        .populate('instruments')
+        //.populate('scores.instruments')
         .populate('periods')
         .exec(function (err, doc) {
             if (doc) {
