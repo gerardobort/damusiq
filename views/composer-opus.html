@@ -1,33 +1,54 @@
-<a href="/<%= opus.get('composer.uri') %>">back</a>
-<h1><%= opus.get('name') %></h1>
+<h1>
+    <%= opus.get('name') %> by 
+    <a href="/<%= opus.get('composer.uri') %>" rel="author"><%= opus.get('composer.fullname') %></a>
+</h1>
+
+<h2>Details</h2>
+<ul>
+    <li>identifier: <%= opus.get('identifier') %></li>
+    <li>periods:
+        <ul>
+            <% opus.get('periods').forEach(function(period, i) { %>
+            <li><a href="/periods/<%= period.get('uri') %>"><%= period.get('name') %></a></li>
+            <% }) %>
+        </ul>
+    </li>
+</ul>
 
 <h2>Periods</h2>
-<ul>
-    <% opus.get('periods').forEach(function(period, i) { %>
-    <li><a href="/periods/<%= period.get('uri') %>"><%= period.get('name') %></a></li>
-    <% }) %>
-</ul>
 
 <h2>Scores</h2>
 <ul>
-    <% opus.get('scores').forEach(function(score, i) { %>
-    <% score.populate() %>
+    <% scores.forEach(function(score, i) { %>
     <li>
-        <a href="/<%= score.getUri() %>"><%= score.get('name') %></a>
+        <a href="/<%= opus.get('composer.uri') %>/<%= opus.get('uri') %>/<%= score.get('uri') %>"><%= score.get('name') %></a>
         <ul>
+            <% if (score.get('part')) { %>
             <li>part: <%= score.get('part') %></li>
+            <% } %>
+            <% if (score.get('arrangement')) { %>
             <li>arrangement_by: <%= score.get('arrangement_by') %></li>
+            <% } %>
+            <% if (score.get('cadenza')) { %>
             <li>cadenza: <%= score.get('cadenza') %></li>
+            <% } %>
+            <% if (score.get('handwritten')) { %>
             <li>handwritten: <%= score.get('handwritten') %></li>
+            <% } %>
+            <% if (score.get('format')) { %>
             <li>format: <%= score.get('format') %></li>
-            <%/*%><li>instruments: 
+            <% } %>
+            <% if (score.get('instruments').length) { %>
+            <li>instruments: 
                 <ul>
                     <% score.get('instruments').forEach(function(instrument, i) { %>
                     <li><a href="/instruments/<%= instrument.get('uri') %>"><%= instrument.get('name') %></a></li>
                     <% }) %>
                 </ul>
-            </li><%*/%>
+            </li>
+            <% } %>
         </ul>
+        <code><%= score.get('_crawler_file_path') %></code>
     </li>
     <% }) %>
 </ul>

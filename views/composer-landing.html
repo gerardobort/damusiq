@@ -1,26 +1,32 @@
 <a href="/">back</a>
-<h1><%= doc.get('fullname') %></h1>
-<p>birth: <%= doc.getBirthYear() %></p>
-<p>death: <%= doc.getDeathYear() %></p>
-<p>wiki english: <%= doc.get('wiki.en.content') %></p>
-<p>wiki spanish: <%= doc.get('wiki.es.content') %></p>
-<p>wiki italian: <%= doc.get('wiki.it.content') %></p>
+
+<h1><%= composer.get('fullname') %></h1>
+<p>birth: <%= composer.getBirthYear() %></p>
+<p>death: <%= composer.getDeathYear() %></p>
+
+<h2>About</h2>
+<% _(composer.get('wiki')).each(function(wiki, i) { %>
+<article>
+    <p><%= wiki.content %></p>
+    <p>source: <a href="<%= wiki.source_url %>"><%=  wiki.source_name %></a></p>
+</article>
+<% }) %>
 
 <h2>Categories</h2>
 <ul>
-    <% doc.get('categories').forEach(function(cat, i) { %>
+    <% composer.get('categories').forEach(function(cat, i) { %>
     <li><a href="/composers/<%= cat.get('uri') %>"><%= cat.get('name') %></a></li>
     <% }) %>
 </ul>
 
 <h2>Opuses</h2>
 <ul>
-    <% doc.get('opuses').forEach(function(opus, i) { %>
-    <li><a href="/<%= doc.get('uri') %>/<%= opus.get('uri') %>"><%= opus.get('name') %> (<%= opus.get('scores').length %>)</a></li>
+    <% composer.get('opuses').forEach(function(opus, i) { %>
+    <li><a href="/<%= composer.get('uri') %>/<%= opus.get('uri') %>"><%= opus.get('name') %> (<%= opus.get('scores').length %>)</a></li>
     <% }) %>
 </ul>
 
 <h2>Images</h2>
-<% (doc.get('images')||[]).forEach(function(img, i) { %>
+<% (composer.get('images')||[]).forEach(function(img, i) { %>
 <p><img src="<%= img %>"/></p>
 <% }) %>

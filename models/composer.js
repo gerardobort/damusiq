@@ -7,9 +7,6 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
 
-var ComposerCategory = require(__dirname + '/composer-category'),
-    Opus = require(__dirname + '/opus');
-
 var ComposerSchema = new Schema({
     _id: ObjectId,
     uri: String,
