@@ -32,14 +32,15 @@ exports.opus = function(req, res){
     
     mongoose.model('Opus')
         .findOne({ uri: opusUri, 'composer.uri': composerUri })
+        .populate('composer')
         .populate('scores')
         //.populate('scores.instruments')
         .populate('periods')
-        .exec(function (err, doc) {
-            if (doc) {
+        .exec(function (err, opus) {
+            if (opus) {
                 res.render('composer-opus.html', {
                     title: 'PDF scores for free!',
-                    doc: doc
+                    opus: opus
                 });
             } else {
                 res.send('composer not found');

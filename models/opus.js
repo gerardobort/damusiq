@@ -8,7 +8,8 @@ var mongoose = require('mongoose'),
     ObjectId = Schema.ObjectId;
 
 var Composer = require(__dirname + '/composer'),
-    Score = require(__dirname + '/score');
+    Score = require(__dirname + '/score'),
+    Period = require(__dirname + '/period');
 
 var OpusSchema = new Schema({
     _id: ObjectId,
@@ -17,6 +18,9 @@ var OpusSchema = new Schema({
     composer: { type: ObjectId, ref: 'Composer'},
     scores: [
         { type: ObjectId, ref: 'Score'}
+    ],
+    periods: [
+        { type: ObjectId, ref: 'Period'}
     ]
 });
 

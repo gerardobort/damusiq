@@ -27,6 +27,13 @@ var ScoreSchema = new Schema({
 });
 
 ScoreSchema.methods = {
+    getUri: function () {
+console.log(this.get('composer'))
+console.log(this.get('opus'))
+        return '/' + this.get('composer.uri') 
+            + '/' + this.get('opus.uri') 
+            + '/' + this.get('uri');
+    }
 };
 
 mongoose.model('Score', ScoreSchema, 'score');

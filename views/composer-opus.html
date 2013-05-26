@@ -1,18 +1,19 @@
-<a href="/<%= doc.get('composer.uri') %>">back</a>
-<h1><%= doc.get('name') %></h1>
+<a href="/<%= opus.get('composer.uri') %>">back</a>
+<h1><%= opus.get('name') %></h1>
 
 <h2>Periods</h2>
 <ul>
-    <% doc.get('periods').forEach(function(period, i) { %>
+    <% opus.get('periods').forEach(function(period, i) { %>
     <li><a href="/periods/<%= period.get('uri') %>"><%= period.get('name') %></a></li>
     <% }) %>
 </ul>
 
 <h2>Scores</h2>
 <ul>
-    <% doc.get('scores').forEach(function(score, i) { %>
+    <% opus.get('scores').forEach(function(score, i) { %>
+    <% score.populate() %>
     <li>
-        <a href="/<%= doc.get('uri') %>/<%= score.get('opus.uri') %>"><%= score.get('name') %></a>
+        <a href="/<%= score.getUri() %>"><%= score.get('name') %></a>
         <ul>
             <li>part: <%= score.get('part') %></li>
             <li>arrangement_by: <%= score.get('arrangement_by') %></li>

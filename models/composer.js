@@ -24,10 +24,16 @@ var ComposerSchema = new Schema({
 
 ComposerSchema.methods = {
     getBirthYear: function () {
-        return new Date(this.get('birth')).getFullYear();
+        if (this.get('birth')) {
+            return new Date(this.get('birth')).getFullYear();
+        }
+        return null;
     },
     getDeathYear: function () {
-        return new Date(this.get('birth')).getFullYear();
+        if (this.get('death')) {
+            return new Date(this.get('death')).getFullYear();
+        }
+        return null;
     },
 };
 
