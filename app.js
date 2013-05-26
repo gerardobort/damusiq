@@ -42,12 +42,12 @@ fs.readdirSync(models_path).forEach(function (file) {
 });
 
 // routes
-app.get('/', mainRoute.homepage);
-app.get('/users', userRoute.list);
-app.get('/composers/:categoryUri', mainRoute.composerCategories);
-//app.get('/instruments/:instrumentUri', mainRoute.instruments);
-app.get('/:composerUri', composerRoute.landing);
-app.get('/:composerUri/:opusUri', composerRoute.opus);
+app.get('/', mainRoute.bootstrap, mainRoute.homepage);
+app.get('/users', mainRoute.bootstrap, userRoute.list);
+app.get('/composers/:categoryUri', mainRoute.bootstrap, mainRoute.composerCategories);
+//app.get('/instruments/:instrumentUri', mainRoute.bootstrap, mainRoute.instruments);
+app.get('/:composerUri', mainRoute.bootstrap, composerRoute.landing);
+app.get('/:composerUri/:opusUri', mainRoute.bootstrap, composerRoute.opus);
 
 
 http.createServer(app).listen(app.get('port'), function(){

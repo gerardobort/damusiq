@@ -7,7 +7,13 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
 
+exports.bootstrap = function(req, res, next){
+    // parse domain / subdomain and perform 301 redirections, or get language
+    next();
+};
+
 exports.homepage = function(req, res){
+console.log(req.caca)
     mongoose.model('Composer').find({}, 'uri fullname', function (err, composers) {
         res.render('main-homepage.html', {
             composers: composers,
@@ -23,8 +29,6 @@ exports.composerCategories = function(req, res){
         .findOne({ 'uri': categoryUri }, '_id', function (err, category) {
             mongoose.model('Composer')
                 .find({ categories: category.get('_id') }, 'uri fullname', function (err, composers) {
-                    console.log(category)
-                    console.log(composers)
                     res.render('main-homepage.html', {
                         composers: composers,
                         title: 'PDF scores for free! - ' + categoryUri
