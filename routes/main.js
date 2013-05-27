@@ -9,25 +9,16 @@ var mongoose = require('mongoose'),
 
 exports.bootstrap = function(req, res, next){
     // parse domain / subdomain and perform 301 redirections, or get language
-    req.lang = 'en' || 'en';
+    res.lang = req.lang = 'en' || 'en';
     next();
 };
 
 exports.homepage = function(req, res){
-    mongoose.model('Composer').find({}, 'uri fullname', function (err, composers) {
-        res.render('main-homepage.html', {
-            composers: composers,
-            title: 'PDF scores for free!'
-        });
-    });
-};
-
-exports.homepage2 = function(req, res){
     mongoose.model('ComposerCategory')
         .find({ lang: req.lang }, 'uri name count')
         .sort({ count: -1 })
         .exec(function (err, categories) {
-            res.render('main-homepage2.html', {
+            res.render('main-homepage.html', {
                 categories: categories,
                 title: 'PDF scores for free!'
             });
@@ -52,3 +43,45 @@ exports.composerCategories = function(req, res){
 };
 
 
+exports.search = function(req, res){
+    var url = require('url'),
+        url_parts = url.parse(req.url, true),
+        q = url_parts.query.q,
+        data = [],
+        reqs = 2;
+
+    function completeRequest() {
+        if (--reqs > 0) {
+            return;
+        }
+        res.render('main-search.html', {
+            results: data,
+            title: 'Search results for ' + q,
+            q: q
+        });
+    }
+
+    mongoose.model('Composer').find({
+            '$or': [
+                { firstname: new RegExp('^' + q, 'i') },
+                { lastname: new RegExp('^' + q, 'i') },
+                { fullname: new RegExp('\W' + q, 'i') }
+            ]
+        }, 'uri fullname', function (err, composers) {
+            (composers||[]).forEach(function (composer) {
+                data.push({ type: 'composer', title: composer.get('fullname'), url: global.helpers.url({ composerUri: composer.get('uri') }) });
+            });
+            completeRequest();
+    });
+
+    mongoose.model('ComposerCategory')
+        .find({
+            lang: req.lang,
+            name: new RegExp('^' + q, 'i')
+        }, 'uri name count', function (err, categories) {
+            (categories||[]).forEach(function (category) {
+                data.push({ type: 'composer-category', title: category.get('name'), url: global.helpers.url({ categoryUri: category.get('uri') }) });
+            });
+            completeRequest();
+    });
+};

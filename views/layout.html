@@ -4,6 +4,16 @@
         <title><%= title %></title>
     </head>
     <body>
-    <%= body %>
+        <header>
+            <div id="header-search">
+                <input type="text" name="q" placeholder="Search for composers, opuses and more..." />
+            </div>
+        </header>
+        <%= body %>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+        <script src="/init/layout.js"></script>
+        <% ('object' === typeof scripts) && scripts.forEach(function (src) { %>
+            <script src="<%= src %>"></script>
+        <% }) %>
     </body>
 </html>

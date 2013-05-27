@@ -28,7 +28,7 @@ exports.autocomplete = function(req, res){
             ]
         }, 'uri fullname', function (err, composers) {
             (composers||[]).forEach(function (composer) {
-                data.push({ name: composer.get('fullname'), url: '/' + composer.get('uri') });
+                data.push({ type: 'composer', title: composer.get('fullname'), url: global.helpers.url({ composerUri: composer.get('uri') }) });
             });
             completeRequest();
     });
@@ -39,7 +39,7 @@ exports.autocomplete = function(req, res){
             name: new RegExp('^' + q, 'i')
         }, 'uri name', function (err, categories) {
             (categories||[]).forEach(function (category) {
-                data.push({ name: category.get('name'), url: '/composers/' + category.get('uri') });
+                data.push({ type: 'composer-category', title: category.get('name'), url: global.helpers.url({ categoryUri: category.get('uri') }) });
             });
             completeRequest();
     });

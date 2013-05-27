@@ -45,8 +45,9 @@ fs.readdirSync(models_path).forEach(function (file) {
 global.helpers = require('./helpers');
 
 // routes
-app.get('/', mainRoute.bootstrap, mainRoute.homepage2);
+app.get('/', mainRoute.bootstrap, mainRoute.homepage);
 app.get('/api/autocomplete/:q', mainRoute.bootstrap, apiRoute.autocomplete);
+app.get('/search.html', mainRoute.bootstrap, mainRoute.search);
 app.get('/users', mainRoute.bootstrap, userRoute.list);
 app.get('/composers/:categoryUri.html', mainRoute.bootstrap, mainRoute.composerCategories);
 //app.get('/instruments/:instrumentUri.html', mainRoute.bootstrap, mainRoute.instruments);

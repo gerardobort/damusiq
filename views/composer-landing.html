@@ -39,7 +39,11 @@
 </ul>
 <% } %>
 
+<% if (composer.get('images').length) { %>
 <h2>Images</h2>
-<% (composer.get('images')||[]).forEach(function(imgSrc, i) { %>
-<p><img src="<%= imgSrc %>"/></p>
-<% }) %>
+<ul>
+    <% composer.get('images').forEach(function(imgSrc, i) { %>
+    <li><img src="<%= imgSrc %>"/></li>
+    <% }) %>
+</ul>
+<% } %>
