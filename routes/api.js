@@ -7,24 +7,16 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
 
-exports.bootstrap = function(req, res, next){
-    // parse domain / subdomain and perform 301 redirections, or get language
-    global.lang = 'en' || 'en';
-    next();
-};
 
 exports.autocomplete = function(req, res){
     var q = req.route.params.q,
         data = [],
         reqs = 2;
 
-console.log(q);
     function completeRequest() {
-console.log(data);
         if (--reqs > 0) {
             return;
         }
-console.log('send', data);
         res.send(JSON.stringify(data));
     }
 
@@ -43,7 +35,7 @@ console.log('send', data);
 
     mongoose.model('ComposerCategory')
         .find({
-            lang: global.lang,
+            lang: req.lang,
             name: new RegExp('^' + q, 'i')
         }, 'uri name', function (err, categories) {
             (categories||[]).forEach(function (category) {

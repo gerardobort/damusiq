@@ -42,14 +42,16 @@ fs.readdirSync(models_path).forEach(function (file) {
     }
 });
 
+global.helpers = require('./helpers');
+
 // routes
 app.get('/', mainRoute.bootstrap, mainRoute.homepage2);
 app.get('/api/autocomplete/:q', mainRoute.bootstrap, apiRoute.autocomplete);
 app.get('/users', mainRoute.bootstrap, userRoute.list);
-app.get('/composers/:categoryUri', mainRoute.bootstrap, mainRoute.composerCategories);
-//app.get('/instruments/:instrumentUri', mainRoute.bootstrap, mainRoute.instruments);
-app.get('/:composerUri', mainRoute.bootstrap, composerRoute.landing);
-app.get('/:composerUri/:opusUri', mainRoute.bootstrap, composerRoute.opus);
+app.get('/composers/:categoryUri.html', mainRoute.bootstrap, mainRoute.composerCategories);
+//app.get('/instruments/:instrumentUri.html', mainRoute.bootstrap, mainRoute.instruments);
+app.get('/:composerUri.html', mainRoute.bootstrap, composerRoute.landing);
+app.get('/:composerUri/:opusUri.html', mainRoute.bootstrap, composerRoute.opus);
 
 
 http.createServer(app).listen(app.get('port'), function(){

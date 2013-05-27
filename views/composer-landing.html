@@ -14,19 +14,19 @@
 
 <h2>Categories</h2>
 <ul>
-    <% composer.get('categories').forEach(function(cat, i) { %>
-    <li><a href="/composers/<%= cat.get('uri') %>"><%= cat.get('name') %></a></li>
+    <% categories.forEach(function(cat, i) { %>
+    <li><a href="<%= global.helpers.url({ categoryUri: cat.get('uri') }) %>"><%= cat.get('name') %></a></li>
     <% }) %>
 </ul>
 
 <h2>Opuses</h2>
 <ul>
     <% composer.get('opuses').forEach(function(opus, i) { %>
-    <li><a href="/<%= composer.get('uri') %>/<%= opus.get('uri') %>"><%= opus.get('name') %> (<%= opus.get('scores').length %>)</a></li>
+    <li><a href="<%= global.helpers.url({ composerUri: composer.get('uri'), opusUri: opus.get('uri') }) %>"><%= opus.get('name') %></a> (<%= opus.get('scores').length %>)</li>
     <% }) %>
 </ul>
 
 <h2>Images</h2>
-<% (composer.get('images')||[]).forEach(function(img, i) { %>
-<p><img src="<%= img %>"/></p>
+<% (composer.get('images')||[]).forEach(function(imgSrc, i) { %>
+<p><img src="<%= imgSrc %>"/></p>
 <% }) %>

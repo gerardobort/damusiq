@@ -9,7 +9,7 @@ var mongoose = require('mongoose'),
 
 exports.bootstrap = function(req, res, next){
     // parse domain / subdomain and perform 301 redirections, or get language
-    global.lang = 'en' || 'en';
+    req.lang = 'en' || 'en';
     next();
 };
 
@@ -24,7 +24,7 @@ exports.homepage = function(req, res){
 
 exports.homepage2 = function(req, res){
     mongoose.model('ComposerCategory')
-        .find({ lang: global.lang }, 'uri name count')
+        .find({ lang: req.lang }, 'uri name count')
         .sort({ count: -1 })
         .exec(function (err, categories) {
             res.render('main-homepage2.html', {
@@ -40,7 +40,7 @@ exports.composerCategories = function(req, res){
     mongoose.model('ComposerCategory')
         .findOne({ 'uri': categoryUri }, function (err, category) {
             mongoose.model('Composer')
-                .find({ categories: category.get('_id') }, 'uri fullname', function (err, composers) {
+                .find({ categories: category.get('_id') }, 'uri fullname birth_year', function (err, composers) {
                     res.render('composer-categories.html', {
                         category: category,
                         composers: composers,

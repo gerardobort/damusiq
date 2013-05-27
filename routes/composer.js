@@ -5,7 +5,8 @@
 
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
-    ObjectId = Schema.ObjectId;
+    ObjectId = Schema.ObjectId,
+    _ = require('underscore');
 
 exports.landing = function(req, res){
     var composerUri = req.route.params.composerUri;
@@ -17,9 +18,12 @@ exports.landing = function(req, res){
         .exec(function (err, composer) {
             if (composer) {
                 res.render('composer-landing.html', {
-                    title: 'PDF scores for free!',
+                    title: composer.get('fullname'),
                     composer: composer,
-                    wiki: composer.get('wiki.' + global.lang)
+                    wiki: composer.get('wiki.' + req.lang),
+                    categories: _.filter(composer.get('categories'), function (cat) {
+                        return cat.get('lang') === req.lang;
+                    })
                 });
             } else {
                 res.send('composer not found');
@@ -48,7 +52,7 @@ exports.opus = function(req, res){
                                 .populate('instruments')
                                 .exec(function (err, scores) {
                                     res.render('composer-opus.html', {
-                                        title: 'PDF scores for free!',
+                                        title: opus.get('name') + ' by ' + composer.get('fullname'),
                                         opus: opus,
                                         scores: scores
                                     });

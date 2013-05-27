@@ -1,7 +1,9 @@
+<a href="/">back</a>
+
 <h1><%= category.get('name') %></h1>
 <p><%= category.get('count') %> composers in this category</p>
 <ul>
     <% composers.forEach(function(composer, i) { %>
-    <li><a href="/<%= composer.get('uri') %>"><%= composer.get('fullname') %></a> <%= composer.getBirthYear() %></li>
+    <li><a href="<%= global.helpers.url({ composerUri: composer.get('uri') }) %>"><%= composer.get('fullname') %></a> (<%= composer.getBirthYear() %>)</li>
     <% }) %>
 </ul>
