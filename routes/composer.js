@@ -9,7 +9,44 @@ var mongoose = require('mongoose'),
     _ = require('underscore');
 
 exports.landing = function(req, res){
-    var composerUri = req.route.params.composerUri;
+    var composerUri = req.route.params.composerUri,
+        reqs = 2,
+        data = { twitts: null };
+
+    function completeRequest() {
+        if (--reqs > 0) {
+            return;
+        }
+        res.render('composer-landing.html', data);
+    }
+
+    var http = require('http'),
+        twApiUrl = 'http://search.twitter.com/search.json?rpp=10&q=$q',
+        twUrl = twApiUrl.replace('$q', escape(composerUri.replace(/-+/g, ' ')));
+
+    http.get(twUrl, function (res) {
+            var body = '';
+            res.on('data', function (chunk) { body += chunk; });
+            res.on('end', function (chunk) {
+                var twJSON = JSON.parse(body);
+                    entries = [];
+                twJSON && twJSON.results && twJSON.results.forEach(function(entry, i) {
+                    entries.push({
+                        thumbnail_url: entry.profile_image_url,
+                        username: entry.from_user,
+                        link_url: 'http://twitter.com/' + entry.from_user,
+                        text: entry.text
+                    });
+                });
+                if (entries.length) {
+                    data.twitts = entries;
+                }
+                completeRequest();
+            });
+        })
+        .on('error', function (error) {
+            completeRequest();
+        });
     
     mongoose.model('Composer')
         .findOne({ uri: composerUri })
@@ -17,14 +54,13 @@ exports.landing = function(req, res){
         .populate('opuses')
         .exec(function (err, composer) {
             if (composer) {
-                res.render('composer-landing.html', {
-                    title: composer.get('fullname'),
-                    composer: composer,
-                    wiki: composer.get('wiki.' + req.lang),
-                    categories: _.filter(composer.get('categories'), function (cat) {
-                        return cat.get('lang') === req.lang;
-                    })
+                data.title = composer.get('fullname');
+                data.composer = composer;
+                data.wiki = composer.get('wiki.' + req.lang);
+                data.categories = _.filter(composer.get('categories'), function (cat) {
+                    return cat.get('lang') === req.lang;
                 });
+                completeRequest();
             } else {
                 res.send('composer not found');
             }
@@ -35,7 +71,7 @@ exports.opus = function(req, res){
     var composerUri = req.route.params.composerUri,
         opusUri = req.route.params.opusUri,
         reqs = 2,
-        data = {};
+        data = { videos: null };
 
     function completeRequest() {
         if (--reqs > 0) {
@@ -52,7 +88,18 @@ exports.opus = function(req, res){
             var body = '';
             res.on('data', function (chunk) { body += chunk; });
             res.on('end', function (chunk) {
-                data.ytJSON = JSON.parse(body);
+                var ytJSON = JSON.parse(body);
+                    entries = [];
+                ytJSON && ytJSON.feed && ytJSON.feed.entry && ytJSON.feed.entry.forEach(function(entry, i) {
+                    entries.push({
+                        thumbnail_url: entry.media$group.media$thumbnail[0].url,
+                        link_url: entry.link[0].href,
+                        title: entry.media$group.media$title.$t
+                    });
+                });
+                if (entries.length) {
+                    data.videos = entries;
+                }
                 completeRequest();
             });
         })

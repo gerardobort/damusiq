@@ -26,6 +26,19 @@
     <% }) %>
 </ul>
 
+<% if (twitts) { %>
+<h2>People say...</h2>
+<ul>
+    <% twitts.forEach(function(twitt, i) { %>
+    <li>
+        <img src="<%= twitt.thumbnail_url %>" />
+        <a href="<%= twitt.link_url %>">@<%= twitt.username %></a>
+        <span><%= twitt.text %></span>
+    </li>
+    <% }) %>
+</ul>
+<% } %>
+
 <h2>Images</h2>
 <% (composer.get('images')||[]).forEach(function(imgSrc, i) { %>
 <p><img src="<%= imgSrc %>"/></p>
