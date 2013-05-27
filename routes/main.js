@@ -23,12 +23,15 @@ exports.homepage = function(req, res){
 };
 
 exports.homepage2 = function(req, res){
-    mongoose.model('ComposerCategory').find({ lang: global.lang }, 'uri name', function (err, categories) {
-        res.render('main-homepage2.html', {
-            categories: categories,
-            title: 'PDF scores for free!'
+    mongoose.model('ComposerCategory')
+        .find({ lang: global.lang }, 'uri name count')
+        .sort({ count: -1 })
+        .exec(function (err, categories) {
+            res.render('main-homepage2.html', {
+                categories: categories,
+                title: 'PDF scores for free!'
+            });
         });
-    });
 };
 
 exports.composerCategories = function(req, res){
