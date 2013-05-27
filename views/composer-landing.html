@@ -4,13 +4,13 @@
 <p>birth: <%= composer.getBirthYear() %></p>
 <p>death: <%= composer.getDeathYear() %></p>
 
+<% if (wiki) { %>
 <h2>About</h2>
-<% _(composer.get('wiki')).each(function(wiki, i) { %>
 <article>
     <p><%= wiki.content %></p>
     <p>source: <a href="<%= wiki.source_url %>"><%=  wiki.source_name %></a></p>
 </article>
-<% }) %>
+<% } %>
 
 <h2>Categories</h2>
 <ul>

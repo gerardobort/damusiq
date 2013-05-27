@@ -9,7 +9,8 @@ var express = require('express'),
     mongoose = require('mongoose'),
     mainRoute = require('./routes/main'),
     composerRoute = require('./routes/composer'),
-    userRoute = require('./routes/user');
+    userRoute = require('./routes/user'),
+    apiRoute = require('./routes/api');
 
 var app = express();
 
@@ -42,7 +43,8 @@ fs.readdirSync(models_path).forEach(function (file) {
 });
 
 // routes
-app.get('/', mainRoute.bootstrap, mainRoute.homepage);
+app.get('/', mainRoute.bootstrap, mainRoute.homepage2);
+app.get('/api/autocomplete/:q', mainRoute.bootstrap, apiRoute.autocomplete);
 app.get('/users', mainRoute.bootstrap, userRoute.list);
 app.get('/composers/:categoryUri', mainRoute.bootstrap, mainRoute.composerCategories);
 //app.get('/instruments/:instrumentUri', mainRoute.bootstrap, mainRoute.instruments);

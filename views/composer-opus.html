@@ -46,6 +46,10 @@
                     <% }) %>
                 </ul>
             </li>
+            <li>
+                preview:
+                    <img src="http://www.pdf-scores.com/previews/<%= opus.get('composer.uri') %>/<%= opus.get('_crawler_id') %>/<%= score.get('_crawler_id') %>.jpg" width="300" />
+            </li>
             <% } %>
         </ul>
         <code><%= score.get('_crawler_file_path') %></code>

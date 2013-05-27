@@ -18,7 +18,8 @@ exports.landing = function(req, res){
             if (composer) {
                 res.render('composer-landing.html', {
                     title: 'PDF scores for free!',
-                    composer: composer
+                    composer: composer,
+                    wiki: composer.get('wiki.' + global.lang)
                 });
             } else {
                 res.send('composer not found');

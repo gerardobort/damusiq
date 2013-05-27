@@ -9,14 +9,23 @@ var mongoose = require('mongoose'),
 
 exports.bootstrap = function(req, res, next){
     // parse domain / subdomain and perform 301 redirections, or get language
+    global.lang = 'en' || 'en';
     next();
 };
 
 exports.homepage = function(req, res){
-console.log(req.caca)
     mongoose.model('Composer').find({}, 'uri fullname', function (err, composers) {
         res.render('main-homepage.html', {
             composers: composers,
+            title: 'PDF scores for free!'
+        });
+    });
+};
+
+exports.homepage2 = function(req, res){
+    mongoose.model('ComposerCategory').find({ lang: global.lang }, 'uri name', function (err, categories) {
+        res.render('main-homepage2.html', {
+            categories: categories,
             title: 'PDF scores for free!'
         });
     });
@@ -26,12 +35,14 @@ exports.composerCategories = function(req, res){
     var categoryUri = req.route.params.categoryUri;
 
     mongoose.model('ComposerCategory')
-        .findOne({ 'uri': categoryUri }, '_id', function (err, category) {
+        .findOne({ 'uri': categoryUri }, function (err, category) {
             mongoose.model('Composer')
                 .find({ categories: category.get('_id') }, 'uri fullname', function (err, composers) {
-                    res.render('main-homepage.html', {
+                    res.render('composer-categories.html', {
+                        category: category,
                         composers: composers,
-                        title: 'PDF scores for free! - ' + categoryUri
+                        title: category.get('name'),
+                        og_title: category.get('name')
                     });
                 });
         });
