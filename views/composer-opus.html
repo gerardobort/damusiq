@@ -17,7 +17,7 @@
 
 <h2>Related videos</h2>
 <ul>
-    <% ytJSON && ytJSON.feed.entry.forEach(function(entry, i) { %>
+    <% ytJSON && ytJSON.feed && ytJSON.feed.entry && ytJSON.feed.entry.forEach(function(entry, i) { %>
     <li>
         <img src="<%= (entry.media$group.media$thumbnail)[0].url %>" />
         <a href="<%= entry.link[0].href %>"><%= entry.media$group.media$title.$t %></a>
