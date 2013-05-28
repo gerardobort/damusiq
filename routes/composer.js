@@ -50,16 +50,14 @@ exports.landing = function(req, res){
     
     mongoose.model('Composer')
         .findOne({ uri: composerUri })
-        .populate('categories')
-        .populate('opuses')
+        .populate('categories', 'uri name', { lang: req.lang }, { sort: [[ 'name', 1 ]] })
+        .populate('opuses', 'uri name identifier scores', { }, { sort: [[ 'order_index', 1 ]] })
         .exec(function (err, composer) {
             if (composer) {
                 data.title = composer.get('fullname');
                 data.composer = composer;
                 data.wiki = composer.get('wiki.' + req.lang);
-                data.categories = _.filter(composer.get('categories'), function (cat) {
-                    return cat.get('lang') === req.lang;
-                });
+                data.categories = composer.get('categories');
                 completeRequest();
             } else {
                 res.send('composer not found');

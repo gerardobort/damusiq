@@ -22,7 +22,7 @@
 <h2>Opuses</h2>
 <ul>
     <% composer.get('opuses').forEach(function(opus, i) { %>
-    <li><a href="<%= global.helpers.url({ composerUri: composer.get('uri'), opusUri: opus.get('uri') }) %>"><%= opus.get('name') %></a> (<%= opus.get('scores').length %>)</li>
+    <li><code><%= opus.get('identifier') %></code> <a href="<%= global.helpers.url({ composerUri: composer.get('uri'), opusUri: opus.get('uri') }) %>"><%= opus.get('name') %></a> (<%= opus.get('scores').length %>)</li>
     <% }) %>
 </ul>
 

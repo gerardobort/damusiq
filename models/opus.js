@@ -17,7 +17,7 @@ var OpusSchema = new Schema({
         { type: ObjectId, ref: 'Score'}
     ],
     periods: [
-        { type: ObjectId, ref: 'Period'}
+        { type: ObjectId, ref: 'Period' }
     ]
 });
 
