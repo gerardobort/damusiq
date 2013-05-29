@@ -1,6 +1,9 @@
 <a href="/">back</a>
 
 <h1><%= category.get('name') %></h1>
+
+<div id="composer-category-timeline" data-category-uri="<%= category.get('uri') %>"></div>
+
 <p><%= category.get('count') %> composers in this category</p>
 <ul>
     <% composers.forEach(function(composer, i) { %>
