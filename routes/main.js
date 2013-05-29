@@ -38,7 +38,7 @@ exports.composerCategories = function(req, res){
                         title: category.get('name'),
                         og_title: category.get('name'),
                         scripts: [
-                            '/library/TimelineJS/compiled/js/storyjs-embed.js',
+                            '/library/timeline/compiled/js/storyjs-embed.js',
                             '/init/composer-categories.js',
                         ]
                     });

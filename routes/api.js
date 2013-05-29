@@ -54,9 +54,9 @@ exports.composerCategoryTimeline = function(req, res){
                 type: 'default',
                 text: '<p>Intro body text goes here, some HTML is ok</p>',
                 asset: {
-                    media: 'https://secure.gravatar.com/avatar/6be4403f35cc2a8a1409e2990acc5dd6?s=420&d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png',
+                    //media: 'https://secure.gravatar.com/avatar/6be4403f35cc2a8a1409e2990acc5dd6?s=420&d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png',
                     credit: '&copy; 2013 pdf-scores.com',
-                    caption: 'PDF SCORES'
+                    caption: 'PDF Scores'
                 },
                 date: [],
                 era: []
