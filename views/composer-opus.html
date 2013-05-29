@@ -27,44 +27,49 @@
 </ul>
 <% } %>
 
-<h2>Periods</h2>
-
 <h2>Scores</h2>
-<ul>
+<table>
+    <tr>
+        <th>Preview</th>
+        <th>Part</th>
+        <th>Arrangement</th>
+        <th>cadenza</th>
+        <th>Handwritten</th>
+        <th>Format</th>
+        <th>Instruments</th>
+        <th>Download link</th>
+    </tr>
     <% scores.forEach(function(score, i) { %>
-    <li>
-        <a href="<%= global.helpers.url({ composerUri: opus.get('composer.uri'), opusUri: opus.get('uri'), scoreUri: score.get('uri') }) %>"><%= score.get('name') %></a>
-        <ul>
-            <% if (score.get('part')) { %>
-            <li>part: <%= score.get('part') %></li>
-            <% } %>
-            <% if (score.get('arrangement')) { %>
-            <li>arrangement_by: <%= score.get('arrangement_by') %></li>
-            <% } %>
-            <% if (score.get('cadenza')) { %>
-            <li>cadenza: <%= score.get('cadenza') %></li>
-            <% } %>
-            <% if (score.get('handwritten')) { %>
-            <li>handwritten: <%= score.get('handwritten') %></li>
-            <% } %>
-            <% if (score.get('format')) { %>
-            <li>format: <%= score.get('format') %></li>
-            <% } %>
-            <% if (score.get('instruments').length) { %>
-            <li>instruments: 
-                <ul>
-                    <% score.get('instruments').forEach(function(instrument, i) { %>
-                    <li><a href="<%= global.helpers.url({ instrumentUri: instrument.get('uri') }) %>"><%= instrument.get('name') %></a></li>
-                    <% }) %>
-                </ul>
-            </li>
-            <li>
-                preview:
-                    <img src="http://www.pdf-scores.com/previews/<%= opus.get('composer.uri') %>/<%= opus.get('_crawler_id') %>/<%= score.get('_crawler_id') %>.jpg" width="300" />
-            </li>
-            <% } %>
-        </ul>
-        <code><%= score.get('_crawler_file_path') %></code>
-    </li>
+    <tr>
+        <!--a href="<%= global.helpers.url({ composerUri: opus.get('composer.uri'), opusUri: opus.get('uri'), scoreUri: score.get('uri') }) %>"><%= score.get('name') %></a-->
+        <td>
+            <img src="http://www.pdf-scores.com/previews/<%= opus.get('composer.uri') %>/<%= opus.get('_crawler_id') %>/<%= score.get('_crawler_id') %>.jpg" height="60" />
+        </td>
+        <td>
+            <%= score.get('part') || '' %>
+        </td>
+        <td>
+            <%= score.get('arrangement_by') || 'no'  %>
+        </td>
+        <td>
+            <%= score.get('cadenza') || 'no' %>
+        </td>
+        <td>
+            <%= score.get('handwritten') ? 'yes' : 'no' %>
+        </td>
+        <td>
+            <%= score.get('format') %>
+        </td>
+        <td>
+            <ul>
+                <% score.get('instruments').forEach(function(instrument, i) { %>
+                <li><a href="<%= global.helpers.url({ instrumentUri: instrument.get('uri') }) %>"><%= instrument.get('name') %></a></li>
+                <% }) %>
+            </ul>
+        </td>
+        <td>
+            <a href="http://www.pdf-scores.com/downloads/<%= opus.get('composer.uri') %>/<%= opus.get('_crawler_id') %>/<%= score.get('_crawler_id') %>.pdf">Download</a>
+        </td>
+    </tr>
     <% }) %>
-</ul>
+</table>
