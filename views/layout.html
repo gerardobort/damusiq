@@ -2,18 +2,43 @@
 <html>
     <head>
         <title><%= title %></title>
+        <link rel="stylesheet" href="/library/gumby/css/gumby.css">
     </head>
     <body>
-        <header>
-            <div id="header-search">
-                <input type="text" name="q" placeholder="Search for composers, opuses and more..." />
+        <header class="navbar" id="nav1">
+            <div class="row">
+            <!-- Toggle for mobile navigation, targeting the <ul> -->
+            <a class="toggle" gumby-trigger="#nav1 > .row > ul" href="#"><i class="icon-menu"></i></a>
+            <ul class="eight columns">
+                <li><a href="/">Home</a></li>
+                <li>
+                    <a href="#">Explore classical music</a>
+                    <div class="dropdown">
+                        <ul>
+                            <li><a href="/">Composer Categories</a></li>
+                            <li><a href="#">Historical Music Periods</a></li>
+                            <li><a href="#">Instruments</a></li>
+                            <li><a href="#">Advanced Search</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li><a href="#">Social</a></li>
+                <li class="field" id="header-search">
+                    <input class="search input" type="search" name="q" placeholder="Search..." />
+                </li>
+            </ul>
             </div>
         </header>
-        <%= body %>
-        <footer>
-            <div>&copy; 2011-2013</div>
+        <div class="row">
+            <%= body %>
+        </div>
+        <footer class="row">
+            <div class="two columns">&copy; 2011-2013</div>
+            <div class="push_eight two columns">pdf-scores.com</div>
         </footer>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+        <script src="/library/gumby/js/libs/modernizr-2.6.2.min.js"></script>
+        <script src="/library/gumby/js/libs/gumby.min.js"></script>
         <script src="/init/layout.js"></script>
         <% ('object' === typeof scripts) && scripts.forEach(function (src) { %>
             <script src="<%= src %>"></script>

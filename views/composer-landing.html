@@ -1,58 +1,79 @@
-<a href="/">back</a>
+<a href="/"><i class="icon-left-open"></i> back</a>
 
 <h1><%= composer.get('fullname') %></h1>
-<p>birth: <%= composer.getBirthYear() %></p>
-<p>death: <%= composer.getDeathYear() %></p>
-
-<% if (wiki) { %>
-<h2>About</h2>
-<article>
-    <p><%= wiki.content %></p>
-    <p>source: <a href="<%= wiki.source_url %>"><%=  wiki.source_name %></a></p>
-</article>
-<% } %>
-
-<h2>Categories</h2>
+<p><i class="icon-user"></i><%= composer.getBirthYear() %> - <%= composer.getDeathYear() %></p>
 <ul>
+    <% periods.forEach(function(period, i) { %>
+    <li class="primary label"><%= period.get('name') %></li>
+    <% }) %>
     <% categories.forEach(function(cat, i) { %>
-    <li><a href="<%= global.helpers.url({ categoryUri: cat.get('uri') }) %>"><%= cat.get('name') %></a></li>
+    <li class="secondary label"><a href="<%= global.helpers.url({ categoryUri: cat.get('uri') }) %>"><%= cat.get('name') %></a></li>
     <% }) %>
 </ul>
 
-<h2>Opuses</h2>
-<table>
-    <tr>
-        <th>Id</th>
-        <th>Title</th>
-        <th>Scores available</th>
+<hr />
+
+<% if (wiki) { %>
+<h2>About</h2>
+<article class="row">
+    <% if (composer.get('images').length) { %>
+    <ul class="four columns polaroid image">
+        <img src="<%= composer.get('images')[0] %>"/></li>
+    </ul>
+    <% } %>
+    <div class="eight columns row">
+        <p><%= wiki.content || "There's no information available at this moment." %></p>
+        <p>source: <a href="<%= wiki.source_url %>"><%=  wiki.source_name %></a></p>
+    </div>
+    <% if (false && composer.get('images').length) { %>
+    <ul class="twelve columns row">
+        <% composer.get('images').forEach(function(imgSrc, i) { %>
+            <% if (i > 0 && i < 12) { %>
+            <li class="one columns photo image"><img src="<%= imgSrc %>"/></li>
+            <% } %>
+        <% }) %>
+    </ul>
+    <% } %>
+</article>
+<% } %>
+
+<hr />
+
+<h2><i class="icon-note-beamed"></i> Opuses</h2>
+<table class="row">
+    <tr class="row">
+        <th class="push_two two columns">Id</th>
+        <th class="four columns">Title</th>
+        <th class="two columns">Scores available</th>
     </tr>
     <% composer.get('opuses').forEach(function(opus, i) { %>
-    <tr>
-        <td><%= opus.get('identifier') %></td>
-        <td><a href="<%= global.helpers.url({ composerUri: composer.get('uri'), opusUri: opus.get('uri') }) %>"><%= opus.get('name') %></a></td>
-        <td><%= opus.get('scores').length %></td>
+    <tr class="row">
+        <td class="push_two two columns"><%= opus.get('identifier') %></td>
+        <td class="four columns"><a href="<%= global.helpers.url({ composerUri: composer.get('uri'), opusUri: opus.get('uri') }) %>"><%= opus.get('name') %></a></td>
+        <td class="two columns"><%= opus.get('scores').length %></td>
     </tr>
     <% }) %>
 </table>
 
+<hr />
+
 <% if (twitts) { %>
-<h2>Comments</h2>
-<ul>
+<h2><i class="icon-twitter"> Comments</i>
+</h2>
+<ul class="row">
     <% twitts.forEach(function(twitt, i) { %>
-    <li>
-        <img src="<%= twitt.thumbnail_url %>" />
-        <a href="<%= twitt.link_url %>">@<%= twitt.username %></a>
-        <span><%= twitt.text %></span>
+    <li class="valign row">
+        <div class="one columns circle photo">
+            <img src="<%= twitt.thumbnail_url %>" />
+        </div>
+        <div class="eight columns">
+            <p>
+                <a href="<%= twitt.link_url %>">@<%= twitt.username %></a>
+                <%= twitt.text.parseUrl() %>
+            </p>
+        </div>
     </li>
     <% }) %>
 </ul>
 <% } %>
 
-<% if (composer.get('images').length) { %>
-<h2>Images</h2>
-<ul>
-    <% composer.get('images').forEach(function(imgSrc, i) { %>
-    <li><img src="<%= imgSrc %>"/></li>
-    <% }) %>
-</ul>
-<% } %>

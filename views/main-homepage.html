@@ -1,6 +1,6 @@
 <h1>Welcome to PDF Scores!</h1>
 <ul>
     <% categories.forEach(function(category, i) { %>
-    <li><a href="<%= global.helpers.url({ categoryUri: category.get('uri') }) %>"><%= category.get('name') %></a> (<%= category.get('count') %>)</li>
+    <li><a href="<%= global.helpers.url({ categoryUri: category.get('uri') }) %>"><%= category.get('name') %></a> <span class="info badge"><%= category.get('count') %></span></li>
     <% }) %>
 </ul>

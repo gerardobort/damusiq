@@ -11,6 +11,16 @@ String.prototype.crop = function (max, ellypsis) {
     return str;
 };
 
+String.prototype.trim = function () {
+    return this.replace(/^\s+|\s+$/g,"");
+}
+
+String.prototype.parseUrl = function () {
+    return this.replace(/[A-Za-z]+:\/\/[A-Za-z0-9-_]+\.[A-Za-z0-9-_:%&~\?\/.=]+/g, function(url) {
+        return '<a href="' + url + '" target="_blank" rel="nofollow">' + url + '</a>';
+    });
+};
+
 exports.url = function(options) {
     if (options.categoryUri) {
         return '/composers/' + options.categoryUri + '.html';

@@ -1,12 +1,18 @@
-<a href="/">back</a>
+<a href="/"><i class="icon-left-open"></i> back</a>
 
 <h1><%= category.get('name') %></h1>
 
 <div id="composer-category-timeline" data-category-uri="<%= category.get('uri') %>"></div>
 
-<p><%= category.get('count') %> composers in this category</p>
+<p>
+    <span class="primary alert"><%= category.get('count') %> composers in this category</span>
+</p>
+
+<hr/>
+
+<h2>Full list</h2>
 <ul>
     <% composers.forEach(function(composer, i) { %>
-    <li><a href="<%= global.helpers.url({ composerUri: composer.get('uri') }) %>"><%= composer.get('fullname') %></a> (<%= composer.getBirthYear() %>)</li>
+    <li><a href="<%= global.helpers.url({ composerUri: composer.get('uri') }) %>"><%= composer.get('fullname') %></a> <span class="default badge"><%= composer.getBirthYear() %></span></li>
     <% }) %>
 </ul>
