@@ -52,7 +52,8 @@ exports.composerCategoryTimeline = function(req, res){
             timeline: {
                 headline: 'Headline',
                 type: 'default',
-                text: '<p>Intro body text goes here, some HTML is ok</p>',
+                text: '<p>Navigate through this category of composers also classified by periods,'
+                    + ' or explore more <a href="/">categories here</a></p>',
                 asset: {
                     //media: 'https://secure.gravatar.com/avatar/6be4403f35cc2a8a1409e2990acc5dd6?s=420&d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png',
                     credit: '&copy; 2013 pdf-scores.com',
@@ -71,21 +72,26 @@ exports.composerCategoryTimeline = function(req, res){
             mongoose.model('Composer')
                 .find({ categories: category.get('_id') })
                 .populate('categories', 'uri name', { lang: req.lang }, { sort: [[ 'name', 1 ]] })
+                .populate('periods') //, 'uri name', { }, { sort: [[ 'name', 1 ]] })
                 .exec(function (err, composers) {
-
                     composers.forEach(function (composer) {
+                        var tag = composer.get('periods').map(function (period) {
+                                    return period.get('name');
+                                })[0],
+                            text = (composer.get('wiki.' + req.lang + '.content')||'').crop(240)
+                                + ' <a href="'
+                                + global.helpers.url({ composerUri: composer.get('uri') })
+                                + '">' + composer.get('opuses').length + ' available opuses</a>';
+
+
                         data.timeline.date.push({
                             startDate: composer.get('birth_year') + ',01,01',
                             endDate: composer.get('death_year') + ',01,01',
                             headline: '<a href="'
                                 + global.helpers.url({ composerUri: composer.get('uri') })
                                 + '">' + composer.get('fullname') + '</a>',
-                            text: composer.get('wiki.' + req.lang + '.content'),
-                            tag: composer.get('categories').map(function (cat) {
-                                if (cat.get('name') !== category.get('name')) {
-                                    return cat.get('name');
-                                }
-                            }),
+                            text: text,
+                            tag: tag,
                             classname: 'composer-' + composer.get('uri'),
                             asset: {
                                 media: (composer.get('images')||[])[0],
@@ -93,6 +99,13 @@ exports.composerCategoryTimeline = function(req, res){
                                 credit: '',
                                 caption: ''
                             }
+                        });
+
+                        data.timeline.era.push({
+                            startDate: composer.get('birth_year') + ',01,01',
+                            endDate: composer.get('death_year') + ',01,01',
+                            headline: composer.get('fullname'),
+                            tag: tag
                         });
                     });
 

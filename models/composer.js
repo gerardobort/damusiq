@@ -16,6 +16,9 @@ var ComposerSchema = new Schema({
     ],
     opuses: [
         { type: ObjectId, ref: 'Opus'}
+    ],
+    periods: [
+        { type: ObjectId, ref: 'Period' }
     ]
 });
 

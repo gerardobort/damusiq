@@ -3,6 +3,14 @@
  * helpers.
  */
 
+String.prototype.crop = function (max, ellypsis) {
+    var str = this.replace(/<[^>]*?>/g, '');
+    if (str.length > max) {
+        return str.substr(0, max) + (ellypsis || '...');
+    }
+    return str;
+};
+
 exports.url = function(options) {
     if (options.categoryUri) {
         return '/composers/' + options.categoryUri + '.html';
