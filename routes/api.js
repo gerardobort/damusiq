@@ -26,7 +26,7 @@ exports.autocomplete = function(req, res){
             '$or': [
                 { firstname: new RegExp('^' + q, 'i') },
                 { lastname: new RegExp('^' + q, 'i') },
-                { fullname: new RegExp('\W' + q, 'i') }
+                { fullname: new RegExp('(^|\W)' + q, 'i') }
             ]
         }, 'uri fullname', function (err, composers) {
             (composers||[]).forEach(function (composer) {

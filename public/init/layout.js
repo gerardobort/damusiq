@@ -7,6 +7,11 @@
         if (13 === event.keyCode && q.length) {
             document.location.href = '/search.html?q=' + q;
         }
+
+        var suggestedVal = $('.dropdown-menu > li.active > a').text();
+        if (38 === event.keyCode || 40 === event.keyCode && suggestedVal.length) {
+            $('#header-search').val(suggestedVal);
+        }
     });
 
     $('#header-search').typeahead({
