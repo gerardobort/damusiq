@@ -46,7 +46,7 @@ global.helpers = require('./helpers');
 
 // routes
 app.get('/', mainRoute.bootstrap, mainRoute.homepage);
-app.get('/api/autocomplete/:q', mainRoute.bootstrap, apiRoute.autocomplete);
+app.get('/api/autocomplete', mainRoute.bootstrap, apiRoute.autocomplete);
 app.get('/api/composer-category-timeline/:categoryUri', mainRoute.bootstrap, apiRoute.composerCategoryTimeline);
 app.get('/search.html', mainRoute.bootstrap, mainRoute.search);
 app.get('/users', mainRoute.bootstrap, userRoute.list);

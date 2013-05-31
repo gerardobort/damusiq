@@ -36,8 +36,8 @@
                     </div>
                 </li>
                 <li><a href="#">Social</a></li>
-                <li class="field" id="header-search">
-                    <input class="search input" type="search" name="q" placeholder="Search..." />
+                <li class="field">
+                    <input class="search input" type="search" name="q" id="header-search" placeholder="Search..." />
                 </li>
             </ul>
             </div>
@@ -52,6 +52,7 @@
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
         <script src="/library/gumby/js/libs/modernizr-2.6.2.min.js"></script>
         <script src="/library/gumby/js/libs/gumby.min.js"></script>
+        <script src="/library/twitter-bootstrap-typeahead/js/bootstrap-typeahead.js"></script>
         <script src="/init/layout.js"></script>
         <% ('object' === typeof scripts) && scripts.forEach(function (src) { %>
             <script src="<%= src %>"></script>

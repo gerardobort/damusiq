@@ -9,7 +9,9 @@ var mongoose = require('mongoose'),
 
 
 exports.autocomplete = function(req, res){
-    var q = req.route.params.q,
+    var url = require('url'),
+        url_parts = url.parse(req.url, true),
+        q = url_parts.query.q.sanitize(),
         data = [],
         reqs = 2;
 
@@ -17,7 +19,7 @@ exports.autocomplete = function(req, res){
         if (--reqs > 0) {
             return;
         }
-        res.send(data);
+        res.send({ results: data });
     }
 
     mongoose.model('Composer').find({
@@ -28,7 +30,7 @@ exports.autocomplete = function(req, res){
             ]
         }, 'uri fullname', function (err, composers) {
             (composers||[]).forEach(function (composer) {
-                data.push({ type: 'composer', title: composer.get('fullname'), url: global.helpers.url({ composerUri: composer.get('uri') }) });
+                data.push({ type: 'composer', id: composer.get('_id').toString(), name: composer.get('fullname'), url: global.helpers.url({ composerUri: composer.get('uri') }) });
             });
             completeRequest();
     });
@@ -39,7 +41,7 @@ exports.autocomplete = function(req, res){
             name: new RegExp('^' + q, 'i')
         }, 'uri name', function (err, categories) {
             (categories||[]).forEach(function (category) {
-                data.push({ type: 'composer-category', title: category.get('name'), url: global.helpers.url({ categoryUri: category.get('uri') }) });
+                data.push({ type: 'composer-category', id: category.get('_id').toString(), name: category.get('name'), url: global.helpers.url({ categoryUri: category.get('uri') }) });
             });
             completeRequest();
     });
