@@ -1,0 +1,33 @@
+.dropdown-menu {
+    position: absolute;
+    display: block;
+    z-index: 100;
+    width: 400px;
+    background: #fafafa;
+    margin: 0 0 0 10px;
+    box-shadow: 0 2px 10px -4px;
+    -webkit-box-shadow: 0 2px 10px -4px;
+    -moz-box-shadow: 0 2px 10px -4px;
+    -o-box-shadow: 0 2px 10px -4px;
+    -ms-box-shadow: 0 2px 10px -4px;
+}
+
+.dropdown-menu > li {
+    display: block;
+    width: 100%;
+    text-indent: 20px;
+    padding: 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.dropdown-menu > li > a {
+    display: block;
+    width: 100%;
+    line-height: 40px;
+    vertical-align: middle;
+    margin: 0;
+}
+
+.dropdown-menu > li.active > a {
+    background: #f2f2f2;
+}
