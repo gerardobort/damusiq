@@ -11,6 +11,11 @@ String.prototype.crop = function (max, ellypsis) {
     return str;
 };
 
+String.prototype.sanitize = function () {
+    var str = this.replace(/<[^>]*?>/g, '');
+    return str;
+};
+
 String.prototype.trim = function () {
     return this.replace(/^\s+|\s+$/g,"");
 }

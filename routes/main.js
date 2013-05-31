@@ -50,7 +50,7 @@ exports.composerCategories = function(req, res){
 exports.search = function(req, res){
     var url = require('url'),
         url_parts = url.parse(req.url, true),
-        q = url_parts.query.q,
+        q = url_parts.query.q.sanitize(),
         data = [],
         reqs = 2;
 
