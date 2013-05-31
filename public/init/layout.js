@@ -2,12 +2,12 @@
 
     $('#header-search').get(0).focus();
 
-    /*$('#header-search').on('keyup', function (event) {
-        var q = $('[name="q"]', this).val();
+    $('#header-search').on('keyup', function (event) {
+        var q = $(this).val();
         if (13 === event.keyCode && q.length) {
             document.location.href = '/search.html?q=' + q;
         }
-    });*/
+    });
 
     $('#header-search').typeahead({
         ajax: {
