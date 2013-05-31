@@ -2,6 +2,9 @@
 <html>
     <head>
         <title><%= title %></title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1">
         <link rel="stylesheet" href="/library/gumby/css/gumby.css">
     </head>
     <body>
@@ -15,10 +18,20 @@
                     <a href="#">Explore classical music</a>
                     <div class="dropdown">
                         <ul>
-                            <li><a href="/">Composer Categories</a></li>
-                            <li><a href="#">Historical Music Periods</a></li>
-                            <li><a href="#">Instruments</a></li>
-                            <li><a href="#">Advanced Search</a></li>
+                            <li><a href="/">by Composer Category</a></li>
+                            <li><a href="#">by Instrument</a></li>
+                            <li>
+                                <a href="#">by Historical Music Periods <i class="icon-right-open"></i></a>
+                                <ul class="dropdown">
+                                    <li><a href="/period/renaissance.html">Renaissance</a></li>
+                                    <li><a href="/period/baroque.html">Baroque</a></li>
+                                    <li><a href="/period/classical.html">Classical</a></li>
+                                    <li><a href="/period/romantic.html">Romantic</a></li>
+                                    <li><a href="/period/early-20th-century.html">Early 20th Century</a></li>
+                                    <li><a href="/period/modern.html">Modern</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">Advanced Search <i class="icon-search"></i></a></li>
                         </ul>
                     </div>
                 </li>

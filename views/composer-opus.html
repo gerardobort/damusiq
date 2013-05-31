@@ -1,30 +1,39 @@
 <h1>
     <%= opus.get('name') %> by 
     <a href="<%= global.helpers.url({ composerUri: opus.get('composer.uri') }) %>" rel="author"><%= opus.get('composer.fullname') %></a>
+    <br /><strong><%= opus.get('identifier') %></strong>
 </h1>
 
-<h2>Details</h2>
 <ul>
-    <li>identifier: <%= opus.get('identifier') %></li>
-    <li>periods:
-        <ul>
-            <% opus.get('periods').forEach(function(period, i) { %>
-            <li><a href="<%= global.helpers.url({ periodUri: period.get('uri') }) %>"><%= period.get('name') %></a></li>
-            <% }) %>
-        </ul>
-    </li>
+    <% opus.get('periods').forEach(function(period, i) { %>
+    <li class="primary label"><a href="<%= global.helpers.url({ periodUri: period.get('uri') }) %>"><%= period.get('name') %></a></li>
+    <% }) %>
 </ul>
 
 <% if (videos) { %>
 <h2>Related videos</h2>
-<ul>
+<div>
     <% videos.forEach(function(video, i) { %>
-    <li>
+    <!--li>
         <img src="<%= video.thumbnail_url %>" />
         <a href="<%= video.link_url %>"><%= video.title %></a>
-    </li>
+    </li-->
+    <%= !(i%3) ? '</div><hr/><div class="row">' : '' %>
+    <div class="four columns">
+        <article class="youtube video">
+            <iframe width="200"
+                    height="180"
+                    src="http://www.youtube.com/embed/<%= video.youtube_id %>"
+                    frameborder="0"
+                    allowfullscreen
+                    webkitAllowFullScreen
+                    mozallowfullscreen>
+            </iframe>
+        </article>
+    </div>
     <% }) %>
-</ul>
+</div>
+<hr />
 <% } %>
 
 <h2>Scores</h2>

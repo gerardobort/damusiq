@@ -92,6 +92,7 @@ exports.opus = function(req, res){
                     entries = [];
                 ytJSON && ytJSON.feed && ytJSON.feed.entry && ytJSON.feed.entry.forEach(function(entry, i) {
                     entries.push({
+                        youtube_id: entry.id.$t.replace(/^.*videos\/([^\/]+)$/, '$1'),
                         thumbnail_url: entry.media$group.media$thumbnail[0].url,
                         link_url: entry.link[0].href,
                         title: entry.media$group.media$title.$t
