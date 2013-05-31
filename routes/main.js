@@ -81,7 +81,7 @@ exports.search = function(req, res){
     mongoose.model('ComposerCategory')
         .find({
             lang: req.lang,
-            name: new RegExp('^' + q, 'i')
+            name: new RegExp('(^|\W)' + q, 'i')
         }, 'uri name count', function (err, categories) {
             (categories||[]).forEach(function (category) {
                 data.push({ type: 'composer-category', title: category.get('name'), url: global.helpers.url({ categoryUri: category.get('uri') }) });
