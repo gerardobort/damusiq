@@ -10,32 +10,6 @@
     <% }) %>
 </ul>
 
-<% if (videos) { %>
-<h2>Related videos</h2>
-<div>
-    <% videos.forEach(function(video, i) { %>
-    <!--li>
-        <img src="<%= video.thumbnail_url %>" />
-        <a href="<%= video.link_url %>"><%= video.title %></a>
-    </li-->
-    <%= !(i%3) ? '</div><hr/><div class="row">' : '' %>
-    <div class="four columns">
-        <article class="youtube video">
-            <iframe width="200"
-                    height="180"
-                    src="http://www.youtube.com/embed/<%= video.youtube_id %>"
-                    frameborder="0"
-                    allowfullscreen
-                    webkitAllowFullScreen
-                    mozallowfullscreen>
-            </iframe>
-        </article>
-    </div>
-    <% }) %>
-</div>
-<hr />
-<% } %>
-
 <h2>Scores</h2>
 <table>
     <tr>
@@ -82,3 +56,31 @@
     </tr>
     <% }) %>
 </table>
+<hr />
+
+<% if (videos) { %>
+<h2>Related videos</h2>
+<div>
+    <% videos.forEach(function(video, i) { %>
+    <!--li>
+        <img src="<%= video.thumbnail_url %>" />
+        <a href="<%= video.link_url %>"><%= video.title %></a>
+    </li-->
+    <%= !(i%3) ? '</div><hr/><div class="row">' : '' %>
+    <div class="four columns">
+        <article class="youtube video">
+            <iframe width="200"
+                    height="180"
+                    src="http://www.youtube.com/embed/<%= video.youtube_id %>"
+                    frameborder="0"
+                    allowfullscreen
+                    webkitAllowFullScreen
+                    mozallowfullscreen>
+            </iframe>
+        </article>
+    </div>
+    <% }) %>
+</div>
+<hr />
+<% } %>
+

@@ -26,22 +26,44 @@ exports.homepage = function(req, res){
 };
 
 exports.composerCategories = function(req, res){
-    var categoryUri = req.route.params.categoryUri;
+    var categoryUri = req.route.params.categoryUri,
+        data = {},
+        reqs = 2;
+
+    function completeRequest() {
+        if (--reqs > 0) {
+            return;
+        }
+        res.render('composer-categories.html', data);
+    }
 
     mongoose.model('ComposerCategory')
         .findOne({ 'uri': categoryUri }, function (err, category) {
+
+            function getRelatedCategoriesRegexp(name) {
+                var keywords = name.match(/\w+/g).filter(function(w){ return !w.match(/(composers?|stubs?|musics?)/i) && w.length > 3; })
+                return new RegExp('(' + keywords.join('|') + ')', 'i');
+            }
+
+            mongoose.model('ComposerCategory')
+                .find({
+                    name: getRelatedCategoriesRegexp(category.get('name'))
+                }, 'uri name', function (err, categories) {
+                    data.related_categories = categories;
+                    completeRequest();
+                });
+
             mongoose.model('Composer')
                 .find({ categories: category.get('_id') }, 'uri fullname birth_year', function (err, composers) {
-                    res.render('composer-categories.html', {
-                        category: category,
-                        composers: composers,
-                        title: category.get('name'),
-                        og_title: category.get('name'),
-                        scripts: [
-                            '/library/timeline/compiled/js/storyjs-embed.js',
-                            '/init/composer-categories.js',
-                        ]
-                    });
+                    data.category = category;
+                    data.composers = composers;
+                    data.title = category.get('name');
+                    data.og_title = category.get('name');
+                    data.scripts = [
+                        '/library/timeline/compiled/js/storyjs-embed.js',
+                        '/init/composer-categories.js',
+                    ];
+                    completeRequest();
                 });
         });
 };

@@ -16,3 +16,14 @@
     <li><a href="<%= global.helpers.url({ composerUri: composer.get('uri') }) %>"><%= composer.get('fullname') %></a> <span class="default badge"><%= composer.getBirthYear() %></span></li>
     <% }) %>
 </ul>
+<hr/>
+
+
+<% if (related_categories.length) { %>
+<h2>Related Categories</h2>
+<ul>
+    <% related_categories.forEach(function(cat, i) { %>
+    <li class="<%= cat.get('name') === category.get('name') ? 'primary' : 'secondary' %> label"><a href="<%= global.helpers.url({ categoryUri: cat.get('uri') }) %>"><%= cat.get('name') %></a></li>
+    <% }) %>
+</ul>
+<% } %>
