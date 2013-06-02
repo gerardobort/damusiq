@@ -1,8 +1,26 @@
 <div class="hp-header">
-    <h1>Welcome to PDF Scores!</h1>
+    <h1>Explore, Listen. <strong>Play.</strong></h1>
 </div>
-<ul>
-    <% categories.forEach(function(category, i) { %>
-    <li><a href="<%= global.helpers.url({ categoryUri: category.get('uri') }) %>"><%= category.get('name') %></a> <span class="info badge"><%= category.get('count') %></span></li>
-    <% }) %>
-</ul>
+
+
+<div class="row popular">
+    <div class="six columns popular-categories">
+        <h2>Popular Categories</h2>
+        <ul>
+            <% popular_categories.forEach(function(category, i) { %>
+            <li><i class="icon-users"></i><a href="<%= global.helpers.url({ categoryUri: category.get('uri') }) %>"><%= category.get('name') %></a> <span class="default badge"><%= category.get('count') %> composers</span></li>
+            <% }) %>
+        </ul>
+    </div>
+
+    <div class="six columns popular-composers">
+        <h2>Popular Composers</h2>
+        <ul>
+            <% popular_composers.forEach(function(composer, i) { %>
+            <li><i class="icon-user"></i><a href="<%= global.helpers.url({ composerUri: composer.uri }) %>"><%= composer.fullname %></a> <span class="default badge"><%= composer.count %> opuses</span></li>
+            <% }) %>
+        </ul>
+    </div>
+</div>
+
+<div class="row"></div>

@@ -11,47 +11,43 @@
 </ul>
 
 <h2>Scores</h2>
-<table>
-    <tr>
-        <th>Preview</th>
-        <th>Part</th>
-        <th>Arrangement</th>
-        <th>Cadenza</th>
-        <th>Handwritten</th>
-        <th>Format</th>
-        <th>Instruments</th>
-        <th>Download link</th>
+<table class="row">
+    <tr class="twelve columns row">
+        <th class="three columns">Preview</th>
+        <th class="one columns">Part</th>
+        <th class="three columns">Additional Info</th>
+        <th class="two columns">Instruments</th>
+        <th class="two columns">Links</th>
     </tr>
     <% scores.forEach(function(score, i) { %>
     <tr>
         <!--a href="<%= global.helpers.url({ composerUri: opus.get('composer.uri'), opusUri: opus.get('uri'), scoreUri: score.get('uri') }) %>"><%= score.get('name') %></a-->
-        <td>
-            <img src="http://www.pdf-scores.com/previews/<%= opus.get('composer.uri') %>/<%= opus.get('_crawler_id') %>/<%= score.get('_crawler_id') %>.jpg" height="60" />
+        <td class="three columns">
+            <img src="http://www.pdf-scores.com/previews/<%= opus.get('composer.uri') %>/<%= opus.get('_crawler_id') %>/<%= score.get('_crawler_id') %>.jpg" width="200" />
         </td>
-        <td>
-            <%= score.get('part') || '' %>
+        <td class="one columns">
+            <%= score.get('part') || '-' %>
         </td>
-        <td>
-            <%= score.get('arrangement_by') || 'no'  %>
+        <td class="three columns">
+            <ul>
+                <li>Arrangement: <%= score.get('arrangement_by') || 'no'  %></li>
+                <li>Cadenza: <%= score.get('cadenza') || 'no' %></li>
+                <li>Handrwitten: <%= score.get('handwritten') ? 'yes' : 'no' %></li>
+            </ul>
         </td>
-        <td>
-            <%= score.get('cadenza') || 'no' %>
-        </td>
-        <td>
-            <%= score.get('handwritten') ? 'yes' : 'no' %>
-        </td>
-        <td>
-            <%= score.get('format') %>
-        </td>
-        <td>
+        <td class="two columns">
             <ul>
                 <% score.get('instruments').forEach(function(instrument, i) { %>
                 <li><a href="<%= global.helpers.url({ instrumentUri: instrument.get('uri') }) %>"><%= instrument.get('name') %></a></li>
                 <% }) %>
             </ul>
         </td>
-        <td>
-            <a href="http://www.pdf-scores.com/downloads/<%= opus.get('composer.uri') %>/<%= opus.get('_crawler_id') %>/<%= score.get('_crawler_id') %>.pdf">Download</a>
+        <td class="three columns">
+            <div class="medium metro rounded btn download primary">
+                <a href="http://www.pdf-scores.com/downloads/<%= opus.get('composer.uri') %>/<%= opus.get('_crawler_id') %>/<%= score.get('_crawler_id') %>.pdf"><i class="icon-download"></i>Download</a>
+            </div>
+            <br />
+            <span class="secondary badge"><%= score.get('format') %></span>
         </td>
     </tr>
     <% }) %>
@@ -66,11 +62,12 @@
         <img src="<%= video.thumbnail_url %>" />
         <a href="<%= video.link_url %>"><%= video.title %></a>
     </li-->
-    <%= !(i%3) ? '</div><hr/><div class="row">' : '' %>
-    <div class="four columns">
+    <% if (i>3) { return; } %>
+    <%= !(i%2) ? '</div><br /><div class="row">' : '' %>
+    <div class="six columns">
         <article class="youtube video">
-            <iframe width="200"
-                    height="180"
+            <iframe width="380"
+                    height="240"
                     src="http://www.youtube.com/embed/<%= video.youtube_id %>"
                     frameborder="0"
                     allowfullscreen
@@ -81,6 +78,5 @@
     </div>
     <% }) %>
 </div>
-<hr />
 <% } %>
 

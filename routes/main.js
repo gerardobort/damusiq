@@ -14,58 +14,74 @@ exports.bootstrap = function(req, res, next){
 };
 
 exports.homepage = function(req, res){
-    mongoose.model('ComposerCategory')
-        .find({ lang: req.lang }, 'uri name count')
-        .sort({ count: -1 })
-        .exec(function (err, categories) {
+    var popularComposersPromise = new mongoose.Promise();
+
+    mongoose.model('Composer').aggregate([
+            { $unwind : '$opuses' },
+            { $group : { _id: '$_id', count: { $sum: 1 }, fullname: { $first: '$fullname' }, uri: { $first: '$uri'}  } },
+            { $sort : { count: -1 } },
+            { $limit : 15 }
+        ], function (req, composers) {
+            popularComposersPromise.resolve(null, composers);
+        });
+
+    mongoose.Promise
+        .when(
+            mongoose.model('ComposerCategory')
+                .find({ lang: req.lang, count: { '$gt': 10 } }, 'uri name count')
+                .sort({ count: -1 })
+                .limit(15)
+                .exec()
+            ,
+            popularComposersPromise
+        )
+        .addBack(function (err, popularCategories, popularComposers) {
             res.render('main-homepage.html', {
-                categories: categories,
+                popular_categories: popularCategories,
+                popular_composers: popularComposers,
                 title: 'PDF scores for free!'
             });
         });
 };
 
 exports.composerCategories = function(req, res){
-    var categoryUri = req.route.params.categoryUri,
-        data = {},
-        reqs = 2;
-
-    function completeRequest() {
-        if (--reqs > 0) {
-            return;
-        }
-        res.render('composer-categories.html', data);
-    }
+    var categoryUri = req.route.params.categoryUri;
 
     mongoose.model('ComposerCategory')
-        .findOne({ 'uri': categoryUri }, function (err, category) {
+        .findOne({ 'uri': categoryUri })
+        .exec(function (err, category) {
 
             function getRelatedCategoriesRegexp(name) {
                 var keywords = name.match(/\w+/g).filter(function(w){ return !w.match(/(composers?|stubs?|musics?)/i) && w.length > 3; })
                 return new RegExp('(' + keywords.join('|') + ')', 'i');
             }
 
-            mongoose.model('ComposerCategory')
-                .find({
-                    name: getRelatedCategoriesRegexp(category.get('name'))
-                }, 'uri name', function (err, categories) {
-                    data.related_categories = categories;
-                    completeRequest();
-                });
-
-            mongoose.model('Composer')
-                .find({ categories: category.get('_id') }, 'uri fullname birth_year', function (err, composers) {
-                    data.category = category;
-                    data.composers = composers;
-                    data.title = category.get('name');
-                    data.og_title = category.get('name');
-                    data.scripts = [
-                        '/library/timeline/compiled/js/storyjs-embed.js',
-                        '/init/composer-categories.js',
-                    ];
-                    completeRequest();
+            mongoose.Promise
+                .when(
+                    mongoose.model('ComposerCategory')
+                        .find({ name: getRelatedCategoriesRegexp(category.get('name')), lang: req.lang }, 'uri name')
+                        .sort({ name: 1 })
+                        .exec()
+                    ,
+                    mongoose.model('Composer')
+                        .find({ categories: category.get('_id') }, 'uri fullname birth_year')
+                        .exec()
+                )
+                .addBack(function (err, categories, composers) {
+                    res.render('composer-categories.html', {
+                        related_categories: categories,
+                        category: category,
+                        composers: composers,
+                        title: category.get('name'),
+                        og_title: category.get('name'),
+                        scripts: [
+                            '/library/timeline/compiled/js/storyjs-embed.js',
+                            '/init/composer-categories.js',
+                        ]
+                    });
                 });
         });
+
 };
 
 
