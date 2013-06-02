@@ -58,6 +58,20 @@ header {
     text-shadow: 4px 0 8px #000;
 }
 
+.social-slot {
+    position: relative;
+    float: right;
+    width: 100%;
+    color: #f2f2f2;
+    background: #191a1b;
+    min-height: 100px;
+    margin: 0 0 1em;
+}
+
+.fb-like {
+    margin: 1.2em;
+}
+
 footer.row {
     font-size: 0.7em;
     background: #fafafa;
@@ -67,12 +81,17 @@ footer.row {
 }
 
 table tr th {
-    padding: 2em 0;
+    padding-top: 2em;
+    padding-bottom: 2em;
     font-weight: bold;
 }
 table tr + tr {
     border-top: 1px solid #ccc;
 }
 table tr + tr td {
-    padding: 1em;
+    padding-top: 1em;
+    padding-bottom: 1em;
+}
+table tr + tr:hover {
+    background: #f2f2f2;
 }

@@ -14,7 +14,7 @@
 <table class="row">
     <tr class="twelve columns row">
         <th class="three columns">Preview</th>
-        <th class="one columns">Part</th>
+        <th class="two columns">Part</th>
         <th class="three columns">Additional Info</th>
         <th class="two columns">Instruments</th>
         <th class="two columns">Links</th>
@@ -23,9 +23,9 @@
     <tr>
         <!--a href="<%= global.helpers.url({ composerUri: opus.get('composer.uri'), opusUri: opus.get('uri'), scoreUri: score.get('uri') }) %>"><%= score.get('name') %></a-->
         <td class="three columns">
-            <img src="http://www.pdf-scores.com/previews/<%= opus.get('composer.uri') %>/<%= opus.get('_crawler_id') %>/<%= score.get('_crawler_id') %>.jpg" width="200" />
+            <img src="http://www.pdf-scores.com/previews/<%= opus.get('composer.uri') %>/<%= opus.get('_crawler_id') %>/<%= score.get('_crawler_id') %>.jpg" width="180" />
         </td>
-        <td class="one columns">
+        <td class="two columns">
             <%= score.get('part') || '-' %>
         </td>
         <td class="three columns">
@@ -42,12 +42,11 @@
                 <% }) %>
             </ul>
         </td>
-        <td class="three columns">
+        <td class="two columns">
             <div class="medium metro rounded btn download primary">
-                <a href="http://www.pdf-scores.com/downloads/<%= opus.get('composer.uri') %>/<%= opus.get('_crawler_id') %>/<%= score.get('_crawler_id') %>.pdf"><i class="icon-download"></i>Download</a>
+                <a href="http://www.pdf-scores.com/downloads/<%= opus.get('composer.uri') %>/<%= opus.get('_crawler_id') %>/<%= score.get('_crawler_id') %>.pdf"><i class="icon-download"></i> <%= score.get('format').toUpperCase() %> </a>
             </div>
             <br />
-            <span class="secondary badge"><%= score.get('format') %></span>
         </td>
     </tr>
     <% }) %>
