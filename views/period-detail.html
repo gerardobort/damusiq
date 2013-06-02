@@ -1,0 +1,10 @@
+<h1><%= title %></h1>
+
+<h2>Composers</h2>
+<ul>
+    <% composers.forEach(function(composer, i) { %>
+    <li><i class="icon-user"></i><a href="<%= global.helpers.url({ composerUri: composer.get('uri') }) %>"><%= composer.get('fullname') %></a></li>
+    <% }) %>
+</ul>
+
+

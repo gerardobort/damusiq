@@ -96,6 +96,9 @@ exports.search = function(req, res){
         if (--reqs > 0) {
             return;
         }
+        if (1 === data.length) {
+            res.redirect(301, data[0].url);
+        }
         res.render('main-search.html', {
             results: data,
             title: 'Search results for ' + q,

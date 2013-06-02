@@ -1,6 +1,6 @@
 
 /*
- * score model
+ * period model
  */
 
 var mongoose = require('mongoose'),
@@ -10,7 +10,7 @@ var mongoose = require('mongoose'),
 var PeriodSchema = new Schema({
     _id: ObjectId,
     uri: String,
-    name: String,
+    name: String
 });
 
 PeriodSchema.methods = {

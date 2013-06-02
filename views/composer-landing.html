@@ -4,7 +4,7 @@
 <p><i class="icon-user"></i><%= composer.getBirthYear() %> - <%= composer.getDeathYear() %></p>
 <ul>
     <% periods.forEach(function(period, i) { %>
-    <li class="primary label"><%= period.get('name') %></li>
+    <li class="primary label"><a href="<%= global.helpers.url({ periodUri: period.get('uri') }) %>"><%= period.get('name') %></a></li>
     <% }) %>
     <% categories.forEach(function(cat, i) { %>
     <li class="secondary label"><a href="<%= global.helpers.url({ categoryUri: cat.get('uri') }) %>"><%= cat.get('name') %></a></li>

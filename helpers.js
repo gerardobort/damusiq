@@ -27,6 +27,9 @@ String.prototype.parseUrl = function () {
 };
 
 exports.url = function(options) {
+    if (options.periodUri) {
+        return '/periods/' + options.periodUri + '.html';
+    }
     if (options.categoryUri) {
         return '/composers/' + options.categoryUri + '.html';
     }
