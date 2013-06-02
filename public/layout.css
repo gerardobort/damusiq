@@ -32,6 +32,27 @@
     background: #f2f2f2;
 }
 
+header {
+    border-bottom: 1px solid #000;
+}
+
+.hp-header {
+    position: relative;
+    z-index: -1;
+    height: 400px;
+    width: 100%;
+    background: url(images/header-bg-1.jpg);
+    margin: -1.5em 0 0;
+}
+
+.hp-header h1 {
+    color: #fff;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: 0.6em;
+}
+
 footer.row {
     font-size: 0.7em;
     background: #fafafa;
