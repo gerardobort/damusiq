@@ -141,3 +141,23 @@ exports.opus = function(req, res){
         });
 };
 
+exports.score = function(req, res){
+    var scoreId = req.route.params.scoreId;
+
+    mongoose.model('Score')
+        .findOne({ _id: scoreId })
+        .populate('composer')
+        .populate('opus')
+        .populate('instruments')
+        .exec(function (err, score) {
+            var data = {};
+            res.render('composer-score.html', {
+                title: score.get('opus.name') + ' by ' + score.get('composer.fullname'),
+                composer: score.get('composer'),
+                opus: score.get('opus'),
+                score: score,
+            });
+        });
+
+};
+

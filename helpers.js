@@ -42,8 +42,8 @@ exports.url = function(options) {
     if (options.categoryUri) {
         return '/composers/' + options.categoryUri + '.html';
     }
-    if (options.composerUri && options.opusUri && options.scoreUri) {
-        return '/' + options.composerUri + '/' + options.opusUri + '/' + options.scoreUri + '.html';
+    if (options.composerUri && options.opusUri && options.scoreId) {
+        return '/' + options.composerUri + '/' + options.opusUri + '/' + options.scoreId + '.html';
     }
     if (options.composerUri && options.opusUri) {
         return '/' + options.composerUri + '/' + options.opusUri + '.html';

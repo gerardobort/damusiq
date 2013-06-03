@@ -1,0 +1,49 @@
+<h1>
+    Score of 
+    <a href="<%= global.helpers.url({ composerUri: composer.get('uri'), opusUri: opus.get('uri') }) %>"><%= opus.get('name') %></a>
+    <br />by 
+    <a href="<%= global.helpers.url({ composerUri: composer.get('uri') }) %>" rel="author"><%= composer.get('fullname') %></a>
+    <br /><strong><%= opus.get('identifier') %> <%= score.get('part') %></strong>
+</h1>
+
+<h2>About this score</h2>
+<div class="row">
+    <div class="row five columns">
+        <h3>Preview</h3>
+        <div class="image polaroid">
+            <img src="http://www.pdf-scores.com/previews/<%= composer.get('uri') %>/<%= opus.get('_crawler_id') %>/<%= score.get('_crawler_id') %>.jpg" width="300" />
+        </div>
+    </div>
+    <div class="row seven columns">
+        <div class="six columns">
+            <h3>Details</h3>
+            <ul>
+                <li>Part: <%= score.get('part') || 'no' %></li>
+                <li>Arrangement: <%= score.get('arrangement_by') || 'no'  %></li>
+                <li>Cadenza: <%= score.get('cadenza') || 'no' %></li>
+                <li>Handrwitten: <%= score.get('handwritten') ? 'yes' : 'no' %></li>
+            </ul>
+        </div>
+        <div class="six columns">
+            <h3>Instruments</h3>
+            <ul>
+                <% score.get('instruments').forEach(function(instrument, i) { %>
+                <li><a href="<%= global.helpers.url({ instrumentUri: instrument.get('uri') }) %>"><%= instrument.get('name') %></a></li>
+                <% }) %>
+            </ul>
+        </div>
+    </div>
+    <div class="row seven columns">
+        <p>
+        <div class="large metro rounded btn download primary">
+            <a href="http://www.pdf-scores.com/downloads/<%= opus.get('composer.uri') %>/<%= opus.get('_crawler_id') %>/<%= score.get('_crawler_id') %>.pdf"><i class="icon-download"></i> Download <%= score.get('format').toUpperCase() %> </a>
+        </div>
+        </p>
+    </div>
+</div>
+
+<h2>Comments</h2>
+<p>What do you think about this score?</p>
+<div class="fb-comments" data-href="<%= global.helpers.url({ composerUri: composer.get('uri'), opusUri: opus.get('uri'), scoreId: score.get('_id') }) %>" data-width="600" data-num-posts="10"></div>
+
+
