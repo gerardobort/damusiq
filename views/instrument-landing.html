@@ -1,0 +1,7 @@
+<h1>Explore by instruments</h1>
+
+<ul>
+    <% instruments.forEach(function(instrument, i) { %>
+    <li><a href="<%= global.helpers.url({ instrumentUri: instrument.get('uri') }) %>"><%= instrument.get('name').ucWords() %></a></li>
+    <% }) %>
+</ul>

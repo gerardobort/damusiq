@@ -11,7 +11,9 @@ var express = require('express'),
     mainRoute = require('./routes/main'),
     composerRoute = require('./routes/composer'),
     userRoute = require('./routes/user'),
+    categoryRoute = require('./routes/category'),
     periodRoute = require('./routes/period'),
+    instrumentRoute = require('./routes/instrument'),
     apiRoute = require('./routes/api');
 
 var app = express();
@@ -52,9 +54,12 @@ app.get('/api/autocomplete', mainRoute.bootstrap, apiRoute.autocomplete);
 app.get('/api/composer-category-timeline/:categoryUri', mainRoute.bootstrap, apiRoute.composerCategoryTimeline);
 app.get('/search.html', mainRoute.bootstrap, mainRoute.search);
 app.get('/users', mainRoute.bootstrap, userRoute.list);
+app.get('/instruments.html', mainRoute.bootstrap, instrumentRoute.landing);
+app.get('/instruments/:instrumentUri.html', mainRoute.bootstrap, instrumentRoute.detail);
 app.get('/periods.html', mainRoute.bootstrap, periodRoute.landing);
 app.get('/periods/:periodUri.html', mainRoute.bootstrap, periodRoute.detail);
-app.get('/composers/:categoryUri.html', mainRoute.bootstrap, mainRoute.composerCategories);
+app.get('/composers.html', mainRoute.bootstrap, categoryRoute.landing);
+app.get('/composers/:categoryUri.html', mainRoute.bootstrap, categoryRoute.detail);
 //app.get('/instruments/:instrumentUri.html', mainRoute.bootstrap, mainRoute.instruments);
 app.get('/:composerUri.html', mainRoute.bootstrap, composerRoute.landing);
 app.get('/:composerUri/:opusUri.html', mainRoute.bootstrap, composerRoute.opus);

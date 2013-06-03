@@ -20,6 +20,12 @@ String.prototype.trim = function () {
     return this.replace(/^\s+|\s+$/g,"");
 }
 
+String.prototype.ucWords = function () {
+    return this.split(' ').map(function (w) {
+        return w.substr(0, 1).toUpperCase() + w.substr(1); 
+    }).join(' ');
+}
+
 String.prototype.parseUrl = function () {
     return this.replace(/[A-Za-z]+:\/\/[A-Za-z0-9-_]+\.[A-Za-z0-9-_:%&~\?\/.=]+/g, function(url) {
         return '<a href="' + url + '" target="_blank" rel="nofollow">' + url + '</a>';
@@ -27,6 +33,9 @@ String.prototype.parseUrl = function () {
 };
 
 exports.url = function(options) {
+    if (options.instrumentUri) {
+        return '/instruments/' + options.instrumentUri + '.html';
+    }
     if (options.periodUri) {
         return '/periods/' + options.periodUri + '.html';
     }

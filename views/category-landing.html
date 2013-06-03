@@ -1,0 +1,9 @@
+<h1>Composers by categories</h1>
+
+<% if (categories.length) { %>
+<ul>
+    <% categories.forEach(function(cat, i) { %>
+    <li><a href="<%= global.helpers.url({ categoryUri: cat.get('uri') }) %>"><%= cat.get('name') %></a> <span class="default badge"><%= cat.get('count') %></span></li>
+    <% }) %>
+</ul>
+<% } %>
