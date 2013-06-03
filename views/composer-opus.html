@@ -43,10 +43,16 @@
             </ul>
         </td>
         <td class="two columns">
+            <% if ('pdf' === score.get('format')) { %>
             <div class="medium metro rounded btn download primary">
-                <!--a href="http://www.pdf-scores.com/downloads/<%= opus.get('composer.uri') %>/<%= opus.get('_crawler_id') %>/<%= score.get('_crawler_id') %>.pdf"><i class="icon-download"></i> <%= score.get('format').toUpperCase() %> </a-->
                 <a href="<%= global.helpers.url({ composerUri: opus.get('composer.uri'), opusUri: opus.get('uri'), scoreId: score.get('_id') }) %>"><i class="icon-download"></i> <%= score.get('format').toUpperCase() %> </a>
             </div>
+            <% } else { %>
+            <div class="medium metro rounded btn download default">
+                <i class="icon-download"></i> <%= score.get('format').toUpperCase() %>
+            </div>
+            <div class="info label">not available</div>
+            <% } %>
             <br />
         </td>
     </tr>
