@@ -14,7 +14,8 @@ var express = require('express'),
     categoryRoute = require('./routes/category'),
     periodRoute = require('./routes/period'),
     instrumentRoute = require('./routes/instrument'),
-    apiRoute = require('./routes/api');
+    apiRoute = require('./routes/api'),
+    sitemapRoute = require('./routes/sitemap');
 
 var app = express();
 
@@ -64,6 +65,7 @@ app.get('/composers/:categoryUri.html', mainRoute.bootstrap, categoryRoute.detai
 app.get('/:composerUri.html', mainRoute.bootstrap, composerRoute.landing);
 app.get('/:composerUri/:opusUri.html', mainRoute.bootstrap, composerRoute.opus);
 app.get('/:composerUri/:opusUri/:scoreId.html', mainRoute.bootstrap, composerRoute.score);
+app.get('/sitemap-categories.xml', mainRoute.bootstrap, sitemapRoute.category);
 
 
 http.createServer(app).listen(app.get('port'), function(){
