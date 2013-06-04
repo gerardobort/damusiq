@@ -156,6 +156,7 @@ exports.score = function(req, res){
                 composer: score.get('composer'),
                 opus: score.get('opus'),
                 score: score,
+                urlBasePath: 'http://' + req.headers.host
             });
         });
 
