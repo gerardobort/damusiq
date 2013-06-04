@@ -12,39 +12,48 @@ exports.autocomplete = function(req, res){
     var url = require('url'),
         url_parts = url.parse(req.url, true),
         q = url_parts.query.q.sanitize(),
-        data = [],
-        reqs = 2;
+        _ = require('underscore');
 
-    function completeRequest() {
-        if (--reqs > 0) {
-            return;
-        }
-        res.send({ results: data });
-    }
+    mongoose.Promise
+        .when(
+            mongoose.model('Composer')
+                .find({
+                    '$or': [
+                        { firstname: new RegExp('^' + q, 'i') },
+                        { lastname: new RegExp('^' + q, 'i') },
+                        { fullname: new RegExp('(^|\W)' + q, 'i') }
+                    ]
+                }, 'uri fullname').exec()
+            ,
+            mongoose.model('ComposerCategory')
+                .find({
+                    lang: req.lang,
+                    name: new RegExp('(^|\W)' + q, 'i')
+                }, 'uri name').exec()
+        )
+        .addBack(function (err, composerResults, categoryResults) {
 
-    mongoose.model('Composer').find({
-            '$or': [
-                { firstname: new RegExp('^' + q, 'i') },
-                { lastname: new RegExp('^' + q, 'i') },
-                { fullname: new RegExp('(^|\W)' + q, 'i') }
-            ]
-        }, 'uri fullname', function (err, composers) {
-            (composers||[]).forEach(function (composer) {
-                data.push({ type: 'composer', id: composer.get('_id').toString(), name: composer.get('fullname'), url: global.helpers.url({ composerUri: composer.get('uri') }) });
+            composerResults = (composerResults||[]).map(function (composer) {
+                return {
+                    type: 'composer',
+                    id: composer.get('_id').toString(),
+                    name: composer.get('fullname'),
+                    url: global.helpers.url({ composerUri: composer.get('uri') })
+                };
             });
-            completeRequest();
-    });
 
-    mongoose.model('ComposerCategory')
-        .find({
-            lang: req.lang,
-            name: new RegExp('(^|\W)' + q, 'i')
-        }, 'uri name', function (err, categories) {
-            (categories||[]).forEach(function (category) {
-                data.push({ type: 'composer-category', id: category.get('_id').toString(), name: category.get('name'), url: global.helpers.url({ categoryUri: category.get('uri') }) });
+            categoryResults = (categoryResults||[]).map(function (category) {
+                return {
+                    type: 'composer-category',
+                    id: category.get('_id').toString(),
+                    name: category.get('name'),
+                    url: global.helpers.url({ categoryUri: category.get('uri') })
+                };
             });
-            completeRequest();
-    });
+
+            res.send({ results: categoryResults.concat(composerResults) });
+        });
+
 };
 
 
