@@ -80,33 +80,16 @@ exports.opus = function(req, res){
         res.render('composer-opus.html', data);
     }
 
-    var http = require('http'),
-        ytApiUrl = 'http://gdata.youtube.com/feeds/api/videos?max-results=8&format=5&alt=json&q=$q',
-        ytUrl = ytApiUrl.replace('$q', escape((composerUri + ' ' + opusUri).replace(/-+/g, ' ')));
+    var youtubeCriteria = (composerUri + ' ' + opusUri).replace(/-+/g, ' '),
+        youtubeService = require(__dirname + '/../services/youtube'),
+        youtubeResultsPromise = youtubeService.search(youtubeCriteria);
 
-    http.get(ytUrl, function (res) {
-            var body = '';
-            res.on('data', function (chunk) { body += chunk; });
-            res.on('end', function (chunk) {
-                var ytJSON = JSON.parse(body);
-                    entries = [];
-                ytJSON && ytJSON.feed && ytJSON.feed.entry && ytJSON.feed.entry.forEach(function(entry, i) {
-                    entries.push({
-                        youtube_id: entry.id.$t.replace(/^.*videos\/([^\/]+)$/, '$1'),
-                        thumbnail_url: entry.media$group.media$thumbnail[0].url,
-                        link_url: entry.link[0].href,
-                        title: entry.media$group.media$title.$t
-                    });
-                });
-                if (entries.length) {
-                    data.videos = entries;
-                }
-                completeRequest();
-            });
-        })
-        .on('error', function (error) {
-            completeRequest();
-        });
+    youtubeResultsPromise.addBack(function (err, results) {
+        if (results) {
+            data.videos = results;
+        }
+        completeRequest();
+    })
     
     mongoose.model('Composer')
         .findOne({ 'uri': composerUri })
@@ -139,9 +122,10 @@ exports.opus = function(req, res){
                 res.send('composer not found');
             }
         });
+
 };
 
-exports.score = function(req, res){
+exports.score = function(req, res) {
     var scoreId = req.route.params.scoreId;
 
     mongoose.model('Score')
