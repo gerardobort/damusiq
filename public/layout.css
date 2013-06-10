@@ -58,13 +58,20 @@ header {
     height: 500px;
 }
 
+
+@media screen and (max-width: 916px) {
+    .main-homepage .hp-header {
+        background-size: auto;
+    }
+}
+
 .main-homepage .hp-header h1 {
     color: #fff;
     position: absolute;
     right: 0;
     bottom: 0;
-    padding: 0.6em;
-    text-shadow: 4px 0 8px #000;
+    padding: 0.4em 0.6em;
+    text-shadow: 10px 0 8px #000;
 }
 
 .main-homepage .social-slot {
@@ -72,8 +79,8 @@ header {
     float: right;
     width: 100%;
     color: #f2f2f2;
-    min-height: 100px;
-    margin: 1em 0 360px;
+    min-height: 460px;
+    margin: 1em 0 0;
 }
 
 .main-homepage .social-slot .fb-like {
