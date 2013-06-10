@@ -15,7 +15,7 @@
 <% if (wiki) { %>
 <h2>About</h2>
 <article class="row">
-    <% if (composer.get('images').length) { %>
+    <% if (composer.get('images') && composer.get('images').length) { %>
     <ul class="four columns polaroid image">
         <img src="<%= composer.get('images')[0] %>"/></li>
     </ul>
