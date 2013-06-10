@@ -45,16 +45,20 @@ header {
     border-bottom: 1px solid #000;
 }
 
-.hp-header {
-    position: relative;
+.main-homepage .hp-header {
+    position: absolute;
     z-index: -1;
     height: 400px;
     width: 100%;
-    background: url(images/header-bg-1.jpg);
-    margin: -1.5em 0 0;
+    background: #000 url(images/header-bg-2.jpg) center top no-repeat;
+    background-size: 100%;
+    top: 20px;
+    left: 0;
+    right: 0;
+    height: 500px;
 }
 
-.hp-header h1 {
+.main-homepage .hp-header h1 {
     color: #fff;
     position: absolute;
     right: 0;
@@ -63,18 +67,17 @@ header {
     text-shadow: 4px 0 8px #000;
 }
 
-.social-slot {
+.main-homepage .social-slot {
     position: relative;
     float: right;
     width: 100%;
     color: #f2f2f2;
-    background: #191a1b;
     min-height: 100px;
-    margin: 0 0 1em;
+    margin: 1em 0 360px;
 }
 
-.fb-like {
-    margin: 1.2em;
+.main-homepage .social-slot .fb-like {
+    margin: 0 0.5em;
 }
 
 footer.row {

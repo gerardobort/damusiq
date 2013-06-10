@@ -1,36 +1,39 @@
-<div class="hp-header">
-    <h1>Explore, Listen. <strong>Play.</strong></h1>
-</div>
+<div class="main-homepage">
 
-<div class="social-slot">
-    <div class="fb-like" data-send="false" data-width="450" data-show-faces="true" data-colorscheme="dark"></div>
-</div>
-
-<h2>Explore</h2>
-<div class="row popular">
-    <div class="six columns popular-categories">
-        <h3>Popular Categories</h3>
-        <ul>
-            <% popular_categories.forEach(function(category, i) { %>
-            <li><i class="icon-users"></i><a href="<%= global.helpers.url({ categoryUri: category.get('uri') }) %>"><%= category.get('name') %></a> <span class="default badge"><%= category.get('count') %> composers</span></li>
-            <% }) %>
-        </ul>
+    <div class="hp-header">
+        <h1>Explore, Listen. <strong>Play.</strong></h1>
     </div>
 
-    <div class="six columns popular-composers">
-        <h3>Popular Composers</h3>
-        <ul>
-            <% popular_composers.forEach(function(composer, i) { %>
-            <li><i class="icon-user"></i><a href="<%= global.helpers.url({ composerUri: composer.uri }) %>"><%= composer.fullname %></a> <span class="default badge"><%= composer.count %> opuses</span></li>
-            <% }) %>
-        </ul>
+    <div class="social-slot">
+        <div class="fb-like" data-send="false" data-width="450" data-show-faces="true" data-colorscheme="dark"></div>
     </div>
+
+    <h2>Explore</h2>
+    <div class="row popular">
+        <div class="six columns popular-categories">
+            <h3>Popular Categories</h3>
+            <ul>
+                <% popular_categories.forEach(function(category, i) { %>
+                <li><i class="icon-users"></i><a href="<%= global.helpers.url({ categoryUri: category.get('uri') }) %>"><%= category.get('name') %></a> <span class="default badge"><%= category.get('count') %> composers</span></li>
+                <% }) %>
+            </ul>
+        </div>
+
+        <div class="six columns popular-composers">
+            <h3>Popular Composers</h3>
+            <ul>
+                <% popular_composers.forEach(function(composer, i) { %>
+                <li><i class="icon-user"></i><a href="<%= global.helpers.url({ composerUri: composer.uri }) %>"><%= composer.fullname %></a> <span class="default badge"><%= composer.count %> opuses</span></li>
+                <% }) %>
+            </ul>
+        </div>
+    </div>
+
+    <h2>Listen</h2>
+    <p>Listen other people playing your favorite music scores.</p>
+
+    <h2>Play</h2>
+    <p>Download your favorite scores for playing with your own instruments and share.</p>
+
+    <div class="row"></div>
 </div>
-
-<h2>Listen</h2>
-<p>Listen other people playing your favorite music scores.</p>
-
-<h2>Play</h2>
-<p>Download your favorite scores for playing with your own instruments and share.</p>
-
-<div class="row"></div>
