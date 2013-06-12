@@ -56,6 +56,11 @@ header {
     left: 0;
     right: 0;
     height: 500px;
+    box-shadow: 0 0 100px 90px #000 inset;
+    -webkit-box-shadow: 0 0 100px 90px #000 inset;
+    -moz-box-shadow: 0 0 100px 90px #000 inset;
+    -o-box-shadow: 0 0 100px 90px #000 inset;
+    -ms-box-shadow: 0 0 100px 90px #000 inset;
 }
 
 
