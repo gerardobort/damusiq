@@ -42,7 +42,8 @@ exports.homepage = function(req, res){
             res.render('main-homepage.html', {
                 popular_categories: popularCategories,
                 popular_composers: popularComposers,
-                title: 'Music library for enthusiasts!'
+                title: 'Music library for enthusiasts!',
+                extra_copyright: '<a href="http://www.flickr.com/photos/frederikmagle/6880670228" rel="author" target="_blank">Photography</a> by Magle.dk under the <a href="http://creativecommons.org/licenses/by/2.0/" target="_blank">CC license</a>.'
             });
         });
 };

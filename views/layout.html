@@ -51,8 +51,15 @@
             <%= body %>
         </div>
         <footer class="row">
-            <div class="three columns">&copy; 2011-2013 | pdf-scores.com</div>
-            <div class="push_seven two columns">All rights reserved.</div>
+            <div class="three columns">
+                <p>&copy; 2011-2013 | Damusiq.com</p>
+                <% if (extra_copyright) { %>
+                <p><%= extra_copyright %></p>
+                <% } %>
+            </div>
+            <div class="push_seven two columns">
+                <p>All rights reserved.</p>
+            </div>
         </footer>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
         <script src="/library/gumby/js/libs/modernizr-2.6.2.min.js"></script>

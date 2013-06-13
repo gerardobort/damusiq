@@ -110,6 +110,16 @@ footer.row {
     border-top: 1px solid #ccc;
 }
 
+footer.row p,
+footer.row p a {
+    font-size: 1em;
+    color: #3e3e3e;
+}
+
+footer.row p a {
+    text-decoration: underline;
+}
+
 table tr th {
     padding-top: 2em;
     padding-bottom: 2em;
