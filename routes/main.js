@@ -8,6 +8,9 @@ var mongoose = require('mongoose'),
     ObjectId = Schema.ObjectId;
 
 exports.bootstrap = function(req, res, next){
+    if ('damusiq.com' !== req.headers.host && !req.headers.host.match(/localhost/)) {
+        res.redirect(301, 'http://damusiq.com'); // prevent boilarplate sites
+    }
     // parse domain / subdomain and perform 301 redirections, or get language
     res.lang = req.lang = 'en' || 'en';
     next();
