@@ -41,8 +41,18 @@
     background: #f2f2f2;
 }
 
-header {
+.navbar {
     border-bottom: 1px solid #000;
+}
+
+.navbar .logo a img {
+    margin: 0 -10px 0;
+}
+
+@media only screen and (max-width: 767px) {
+    .navbar .logo a img {
+        margin: 10px;
+    }
 }
 
 .main-homepage .hp-header {
