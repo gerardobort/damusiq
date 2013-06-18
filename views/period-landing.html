@@ -1,6 +1,9 @@
 <h1>Explore Music by Historical Period</h1>
 
 <% _(periods).each(function (period) { %>
-<h2><a href="/periods/<%= period.get('uri') %>.html"><%= period.get('name').ucWords() %></a></h2>
-<%= period.get('description') %>
+<h2>
+    <a href="/periods/<%= period.get('uri') %>.html"><%= period.get('name').ucWords() %></a>
+    (<%= period.get('from_year') %> - <%= period.get('to_year') %>)
+</h2>
+<p><%= period.get('description') %></p>
 <% }) %>
