@@ -64,7 +64,7 @@ app.get('/:composerUri.html', mainRoute.bootstrap, composerRoute.landing);
 app.get('/:composerUri/:opusUri.html', mainRoute.bootstrap, composerRoute.opus);
 app.get('/:composerUri/:opusUri/:scoreId.html', mainRoute.bootstrap, composerRoute.score);
 app.get('/sitemap-categories.xml', mainRoute.bootstrap, sitemapRoute.category);
-app.get('/:all', mainRoute.bootstrap, mainRoute.error404);
+app.use(mainRoute.error404);
 
 
 http.createServer(app).listen(app.get('port'), function(){
