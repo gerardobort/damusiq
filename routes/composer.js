@@ -62,7 +62,8 @@ exports.landing = function(req, res){
                 data.periods = composer.get('periods');
                 completeRequest();
             } else {
-                res.send('composer not found');
+                res.status(404);
+                res.render('error-404.html');
             }
         });
 };
@@ -114,12 +115,14 @@ exports.opus = function(req, res){
 
                                 });
                         } else {
-                            res.send('opus not found');
+                            res.status(404);
+                            res.render('error-404.html');
                         }
                     });
 
             } else {
-                res.send('composer not found');
+                res.status(404);
+                res.render('error-404.html');
             }
         });
 
@@ -135,13 +138,18 @@ exports.score = function(req, res) {
         .populate('instruments')
         .exec(function (err, score) {
             var data = {};
-            res.render('composer-score.html', {
-                title: score.get('opus.name') + ' by ' + score.get('composer.fullname'),
-                composer: score.get('composer'),
-                opus: score.get('opus'),
-                score: score,
-                urlBasePath: 'http://' + req.headers.host
-            });
+            if (score) {
+                res.render('composer-score.html', {
+                    title: score.get('opus.name') + ' by ' + score.get('composer.fullname'),
+                    composer: score.get('composer'),
+                    opus: score.get('opus'),
+                    score: score,
+                    urlBasePath: 'http://' + req.headers.host
+                });
+            } else {
+                res.status(404);
+                res.render('error-404.html');
+            }
         });
 
 };

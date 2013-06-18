@@ -54,7 +54,6 @@ app.get('/', mainRoute.bootstrap, mainRoute.homepage);
 app.get('/api/autocomplete', mainRoute.bootstrap, apiRoute.autocomplete);
 app.get('/api/composer-category-timeline/:categoryUri', mainRoute.bootstrap, apiRoute.composerCategoryTimeline);
 app.get('/search.html', mainRoute.bootstrap, mainRoute.search);
-app.get('/users', mainRoute.bootstrap, userRoute.list);
 app.get('/instruments.html', mainRoute.bootstrap, instrumentRoute.landing);
 app.get('/instruments/:instrumentUri.html', mainRoute.bootstrap, instrumentRoute.detail);
 app.get('/periods.html', mainRoute.bootstrap, periodRoute.landing);
@@ -66,6 +65,7 @@ app.get('/:composerUri.html', mainRoute.bootstrap, composerRoute.landing);
 app.get('/:composerUri/:opusUri.html', mainRoute.bootstrap, composerRoute.opus);
 app.get('/:composerUri/:opusUri/:scoreId.html', mainRoute.bootstrap, composerRoute.score);
 app.get('/sitemap-categories.xml', mainRoute.bootstrap, sitemapRoute.category);
+app.get('/:all', mainRoute.bootstrap, mainRoute.error404);
 
 
 http.createServer(app).listen(app.get('port'), function(){

@@ -37,30 +37,35 @@ exports.detail = function(req, res){
                 return new RegExp('(' + keywords.join('|') + ')', 'i');
             }
 
-            mongoose.Promise
-                .when(
-                    mongoose.model('ComposerCategory')
-                        .find({ name: getRelatedCategoriesRegexp(category.get('name')), lang: req.lang }, 'uri name')
-                        .sort({ name: 1 })
-                        .exec()
-                    ,
-                    mongoose.model('Composer')
-                        .find({ categories: category.get('_id') }, 'uri fullname birth_year')
-                        .exec()
-                )
-                .addBack(function (err, categories, composers) {
-                    res.render('category-detail.html', {
-                        related_categories: categories,
-                        category: category,
-                        composers: composers,
-                        title: category.get('name'),
-                        og_title: category.get('name'),
-                        scripts: [
-                            '/library/timeline/compiled/js/storyjs-embed.js',
-                            '/init/composer-categories.js',
-                        ]
+            if (category) {
+                mongoose.Promise
+                    .when(
+                        mongoose.model('ComposerCategory')
+                            .find({ name: getRelatedCategoriesRegexp(category.get('name')), lang: req.lang }, 'uri name')
+                            .sort({ name: 1 })
+                            .exec()
+                        ,
+                        mongoose.model('Composer')
+                            .find({ categories: category.get('_id') }, 'uri fullname birth_year')
+                            .exec()
+                    )
+                    .addBack(function (err, categories, composers) {
+                        res.render('category-detail.html', {
+                            related_categories: categories,
+                            category: category,
+                            composers: composers,
+                            title: category.get('name'),
+                            og_title: category.get('name'),
+                            scripts: [
+                                '/library/timeline/compiled/js/storyjs-embed.js',
+                                '/init/composer-categories.js',
+                            ]
+                        });
                     });
-                });
+            } else {
+                res.status(404);
+                res.render('error-404.html');
+            }
         });
 
 };

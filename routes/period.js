@@ -26,17 +26,22 @@ exports.detail = function(req, res){
     mongoose.model('Period')
         .findOne({ 'uri': periodUri }, 'uri name')
         .exec(function (err, period) {
-            mongoose.model('Composer')
-                .find({ 'periods': period.get('_id') }, 'uri fullname')
-                .exec(function (err, composers) {
-                    res.render('period-detail.html', {
-                        composers: composers,
-                        title: period.name,
-                        og_title: period.name,
-                        scripts: [
-                        ]
+            if (period) {
+                mongoose.model('Composer')
+                    .find({ 'periods': period.get('_id') }, 'uri fullname')
+                    .exec(function (err, composers) {
+                        res.render('period-detail.html', {
+                            composers: composers,
+                            title: period.name,
+                            og_title: period.name,
+                            scripts: [
+                            ]
+                        });
                     });
-                });
+            } else {
+                res.status(404);
+                res.render('error-404.html');
+            }
         });
 
 };
