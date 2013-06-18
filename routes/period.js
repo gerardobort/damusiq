@@ -10,12 +10,18 @@ var mongoose = require('mongoose'),
 
 exports.landing = function(req, res){
 
-    res.render('period-landing.html', {
-        title: 'Periods',
-        og_title: 'Periods',
-        scripts: [
-        ]
-    });
+    mongoose.model('Period')
+        .find({ })
+        .sort({ order_index: 1 })
+        .exec(function (err, periods) {
+            res.render('period-landing.html', {
+                periods: periods,
+                title: 'Periods',
+                og_title: 'Periods',
+                scripts: [
+                ]
+            });
+        });
 
 };
 
@@ -24,7 +30,7 @@ exports.detail = function(req, res){
 
 
     mongoose.model('Period')
-        .findOne({ 'uri': periodUri }, 'uri name')
+        .findOne({ 'uri': periodUri })
         .exec(function (err, period) {
             if (period) {
                 mongoose.model('Composer')
@@ -32,8 +38,9 @@ exports.detail = function(req, res){
                     .exec(function (err, composers) {
                         res.render('period-detail.html', {
                             composers: composers,
-                            title: period.name,
-                            og_title: period.name,
+                            period: period,
+                            title: period.get('name'),
+                            og_title: period.get('name'),
                             scripts: [
                             ]
                         });

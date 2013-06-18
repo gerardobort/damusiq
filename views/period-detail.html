@@ -1,5 +1,7 @@
 <h1><%= title.ucWords() %> composers</h1>
 
+<%= period.get('description') %>
+
 <ul>
     <% composers.forEach(function(composer, i) { %>
     <li><i class="icon-user"></i><a href="<%= global.helpers.url({ composerUri: composer.get('uri') }) %>"><%= composer.get('fullname') %></a></li>
