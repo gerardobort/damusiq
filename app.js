@@ -53,6 +53,7 @@ app.get('/', mainRoute.bootstrap, mainRoute.homepage);
 app.get('/about.html', mainRoute.bootstrap, mainRoute.about);
 app.get('/legal.html', mainRoute.bootstrap, mainRoute.legal);
 app.get('/api/autocomplete', mainRoute.bootstrap, apiRoute.autocomplete);
+app.get('/api/image/:imageUri.jpg', mainRoute.bootstrap, apiRoute.imageJpg);
 app.get('/api/composer-category-timeline/:categoryUri', mainRoute.bootstrap, apiRoute.composerCategoryTimeline);
 app.get('/search.html', mainRoute.bootstrap, mainRoute.search);
 app.get('/instruments.html', mainRoute.bootstrap, instrumentRoute.landing);

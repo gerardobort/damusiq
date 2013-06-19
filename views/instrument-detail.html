@@ -1,0 +1,15 @@
+<h1><%= instrument.get('name').ucWords() %></h1>
+<!-- img class="polaroid image" src="/api/image/<%= instrument.get('uri') %>.jpg" / -->
+
+<h2>Relevant Scores</h2>
+<ul>
+    <% random_scores.forEach(function(score, i) { %>
+    <li>
+        <%= score.get('composer.fullname')%> - <a href="<%= global.helpers.url({ composerUri: score.get('composer.uri'), opusUri: score.get('opus.uri'), scoreId: score.get('_id').toString() }) %>"><%= score.get('name') %></a> - 
+        <% score.get('instruments').forEach(function (instr) { %>
+            <a class="<%= instr.get('name') === instrument.get('name') ? 'primary' : 'secondary' %> label"
+                href="<%= global.helpers.url({ instrumentUri: instr.get('uri') }) %>"><%= instr.get('name') %></a>
+        <% }) %>
+    </li>
+    <% }) %>
+</ul>

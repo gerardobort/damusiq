@@ -124,3 +124,65 @@ exports.composerCategoryTimeline = function(req, res){
                 });
         });
 };
+
+exports.imageJpg = function(req, res){
+    var imageUri = req.route.params.imageUri,
+        _ = require('underscore');
+
+    var http = require('http'),
+        searchApiUrl = 'http://en.wikipedia.org/w/api.php?action=query&titles=$q&prop=images&imlimit=10&format=json',
+        searchUrl = searchApiUrl.replace('$q', escape(imageUri.replace(/-+/g, ' '))),
+        detailApiUrl = 'http://en.wikipedia.org/w/api.php?action=query&titles=$q&prop=imageinfo&iiprop=url&format=json',
+        detailUrl = '';
+
+    http.get(searchUrl, function (res1) {
+            var body = '';
+            res1.on('data', function (chunk) { body += chunk; });
+            res1.on('end', function (chunk) {
+                var searchJSON = JSON.parse(body);
+
+                var imageName = _(_(searchJSON.query.pages).map(function (page, pageNumber) {
+                    var jpgImages = _(page.images).filter(function (image) {
+                        return image.title.substr(-4, 4) === '.jpg';
+                    });
+                    if (!jpgImages.length && page.images && page.images.length) {
+                        console.log(page.images[0].title);
+                        return page.images[0].title;
+                    }
+                    return _(jpgImages).first() ? _(jpgImages).first().title : '';
+                })).first();
+
+                if (imageName) {
+
+                    detailUrl = detailApiUrl.replace('$q', escape(imageName));
+                    http.get(detailUrl, function (res2) {
+                            var body = '';
+                            res2.on('data', function (chunk) { body += chunk; });
+                            res2.on('end', function (chunk) {
+                                var searchJSON = JSON.parse(body);
+
+                                var imageUrl = _(_(searchJSON.query.pages).map(function (page, pageNumber) {
+                                    return _(page.imageinfo).first().url;
+                                })).first();
+
+                                res.redirect(imageUrl);
+                                
+                            });
+                        })
+                        .on('error', function (error) {
+                            res.status(404);
+                            res.render('error-404.html');
+                        });
+                } else {
+                    res.status(404);
+                    res.render('error-404.html');
+                }
+                
+            });
+        })
+        .on('error', function (error) {
+            res.status(404);
+            res.render('error-404.html');
+        });
+    
+};
