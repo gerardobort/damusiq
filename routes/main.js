@@ -103,6 +103,13 @@ exports.search = function(req, res){
         });
 };
 
+exports.about = function (req, res) {
+    res.render('main-about.html');
+};
+
+exports.legal = function (req, res) {
+    res.render('main-legal.html');
+};
 
 exports.error404 = function (req, res) {
     res.status(404);
