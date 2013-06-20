@@ -108,6 +108,7 @@
     max-width: 250px;
     height: 80px;
     display: block;
+    position: relative;
     float: left;
     margin: 0 0.5em;
 }
