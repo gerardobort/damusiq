@@ -13,6 +13,11 @@ exports.bootstrap = function(req, res, next){
     }
     // parse domain / subdomain and perform 301 redirections, or get language
     res.lang = req.lang = 'en' || 'en';
+    res.locals.title_prepend = 'Damusiq';
+    res.locals.title = '';
+    res.locals.og_title = 'Damusiq: Musiq library for enthusiasts!';
+    res.locals.og_image = 'http://damusiq.com/images/og-image.png';
+    res.locals.og_description = 'Find, share and download academic music scores for free!';
     next();
 };
 
