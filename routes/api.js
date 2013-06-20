@@ -90,7 +90,7 @@ exports.composerCategoryTimeline = function(req, res){
                                     return period.get('name');
                                 })[0],
                             text = (composer.get('wiki.' + req.lang + '.content')||'').crop(240)
-                                + ' <a href="'
+                                + ' <br/><a href="'
                                 + global.helpers.url({ composerUri: composer.get('uri') })
                                 + '">' + composer.get('opuses').length + ' available opuses</a>';
 

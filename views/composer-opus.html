@@ -12,6 +12,7 @@
 
 <h2>Scores</h2>
 <table class="row">
+    <thead>
     <tr class="twelve columns row">
         <th class="three columns">Preview</th>
         <th class="two columns">Part</th>
@@ -19,6 +20,8 @@
         <th class="two columns">Instruments</th>
         <th class="two columns">Links</th>
     </tr>
+    </thead>
+    <tbody>
     <% scores.forEach(function(score, i) { %>
     <tr>
         <!--a href="<%= global.helpers.url({ composerUri: opus.get('composer.uri'), opusUri: opus.get('uri'), scoreUri: score.get('uri') }) %>"><%= score.get('name') %></a-->
@@ -56,7 +59,27 @@
             <br />
         </td>
     </tr>
+    <% if (0===i || 1===i || scores.length-1===i) { %>
+    <tr class="no-hover">
+        <td class="twelve columns">
+            <div class="ad ad728x90 halign-center">
+                <script type="text/javascript"><!--
+                google_ad_client = "ca-pub-4000671410563799";
+                /* damusiq - composer opus - skyscraper horizontal */
+                google_ad_slot = "7626558412";
+                google_ad_width = 728;
+                google_ad_height = 90;
+                //-->
+                </script>
+                <script type="text/javascript"
+                src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+                </script>
+            </div>
+        </td>
+    </tr>
+    <% } %>
     <% }) %>
+    </tbody>
 </table>
 <hr />
 

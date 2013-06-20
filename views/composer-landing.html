@@ -15,14 +15,45 @@
 <% if (wiki) { %>
 <h2>About</h2>
 <article class="row">
-    <% if (composer.get('images') && composer.get('images').length) { %>
-    <ul class="four columns polaroid image">
-        <img src="<%= composer.get('images')[0] %>"/></li>
+    <ul class="four columns polaroid image valign-top">
+        <% if (composer.get('images') && composer.get('images').length) { %>
+        <li><img src="<%= composer.get('images')[0] %>"/></li>
+        <% } else { %>
+        <li>
+            <div class="ad ad336x280 valign-top">
+                <script type="text/javascript"><!--
+                google_ad_client = "ca-pub-4000671410563799";
+                /* damusiq - composer landing - 336x280 */
+                google_ad_slot = "4812692812";
+                google_ad_width = 336;
+                google_ad_height = 280;
+                //-->
+                </script>
+                <script type="text/javascript"
+                src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+                </script>
+            </div>
+        </li>
+        <% } %>
     </ul>
-    <% } %>
     <div class="eight columns row">
         <p><%= wiki.content || "There's no information available at this moment." %></p>
         <p>source: <a href="<%= wiki.source_url %>"><%=  wiki.source_name %></a></p>
+        <% if (composer.get('images') && composer.get('images').length) { %>
+        <div class="ad ad336x280 valign-top">
+            <script type="text/javascript"><!--
+            google_ad_client = "ca-pub-4000671410563799";
+            /* damusiq - category detail - 336x280 */
+            google_ad_slot = "4033963612";
+            google_ad_width = 336;
+            google_ad_height = 280;
+            //-->
+            </script>
+            <script type="text/javascript"
+            src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+            </script>
+        </div>
+        <% } %>
     </div>
     <% if (false && composer.get('images').length) { %>
     <ul class="twelve columns row">

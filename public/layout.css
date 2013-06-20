@@ -80,6 +80,12 @@
     }
 }
 
+@media screen and (min-width: 1200px) {
+    .main-homepage .hp-header {
+        background-size: 1200px;
+    }
+}
+
 .main-homepage .hp-header h1 {
     color: #fff;
     position: absolute;
@@ -98,7 +104,11 @@
     margin: 1em 0 0;
 }
 
-.main-homepage .social-slot .fb-like {
+.main-homepage .social-slot li {
+    max-width: 250px;
+    height: 80px;
+    display: block;
+    float: left;
     margin: 0 0.5em;
 }
 
@@ -125,13 +135,36 @@ table tr th {
     padding-bottom: 2em;
     font-weight: bold;
 }
-table tr + tr {
+table tbody tr {
     border-top: 1px solid #ccc;
 }
-table tr + tr td {
+table tbody tr td {
     padding-top: 1em;
     padding-bottom: 1em;
 }
-table tr + tr:hover {
+table tbody tr:hover {
     background: #f2f2f2;
+}
+table tbody tr.no-hover:hover {
+    background: none;
+}
+
+.halign-center {
+    margin: 0 auto;
+}
+.valign-top {
+    margin-top: 1.25em;
+}
+.ad {
+    border: 1px dotted #ccc;
+}
+.ad.ad336x280 {
+    width: 336px;
+    height: 280px;
+}
+
+.ad.ad728x90 {
+    width: 728px;
+    height: 90px;
+    border: 0;
 }

@@ -28,9 +28,24 @@
             <h3>Instruments</h3>
             <ul>
                 <% score.get('instruments').forEach(function(instrument, i) { %>
-                <li><a href="<%= global.helpers.url({ instrumentUri: instrument.get('uri') }) %>"><%= instrument.get('name') %></a></li>
+                <li><a class="primary label" href="<%= global.helpers.url({ instrumentUri: instrument.get('uri') }) %>"><%= instrument.get('name') %></a></li>
                 <% }) %>
             </ul>
+        </div>
+    </div>
+    <div class="row seven columns">
+        <div class="ad ad336x280 valign-top">
+            <script type="text/javascript"><!--
+            google_ad_client = "ca-pub-4000671410563799";
+            /* damusiq - composer score - 336x280 */
+            google_ad_slot = "2777556416";
+            google_ad_width = 336;
+            google_ad_height = 280;
+            //-->
+            </script>
+            <script type="text/javascript"
+            src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+            </script>
         </div>
     </div>
     <div class="row seven columns">
