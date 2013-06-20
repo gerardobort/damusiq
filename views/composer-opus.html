@@ -41,7 +41,7 @@
         <td class="two columns">
             <ul>
                 <% score.get('instruments').forEach(function(instrument, i) { %>
-                <li><a href="<%= global.helpers.url({ instrumentUri: instrument.get('uri') }) %>"><%= instrument.get('name') %></a></li>
+                <li><a class="primary label" href="<%= global.helpers.url({ instrumentUri: instrument.get('uri') }) %>"><%= instrument.get('name') %></a></li>
                 <% }) %>
             </ul>
         </td>
