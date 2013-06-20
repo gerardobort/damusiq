@@ -53,6 +53,7 @@ global.helpers = require('./helpers');
 app.get('/', mainRoute.bootstrap, mainRoute.homepage);
 app.get('/about.html', mainRoute.bootstrap, mainRoute.about);
 app.get('/legal.html', mainRoute.bootstrap, mainRoute.legal);
+app.get('/google619bfb114d1bc683.html', mainRoute.bootstrap, mainRoute.googleVerification);
 app.get('/api/autocomplete', mainRoute.bootstrap, apiRoute.autocomplete);
 app.get('/api/image/:imageUri.jpg', mainRoute.bootstrap, apiRoute.imageJpg);
 app.get('/api/composer-category-timeline/:categoryUri', mainRoute.bootstrap, apiRoute.composerCategoryTimeline);

@@ -117,6 +117,10 @@ exports.legal = function (req, res) {
     res.render('main-legal.html');
 };
 
+exports.googleVerification = function (req, res) {
+    res.render('main-googleVerification.html', { layout: null });
+};
+
 exports.error404 = function (req, res) {
     res.status(404);
     res.render('error-404.html');
