@@ -110,6 +110,7 @@
     display: block;
     position: relative;
     float: left;
+    clear: both;
     margin: 0 0.5em;
 }
 
