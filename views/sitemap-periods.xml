@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+    <urlset xmlns="http://www.google.com/schemas/sitemap/0.9">
+        <% (periods||[]).forEach(function(per, i) { %>
+        <url>
+            <loc><%= baseUrl %><%= global.helpers.url({ periodUri: per.get('uri') }) %></loc>
+            <lastmod><%= per.get('updated').toISOString() %></lastmod>
+            <changefreq>monthly</changefreq>
+            <priority>0.8</priority>
+        </url>
+        <% }) %>
+    </urlset>

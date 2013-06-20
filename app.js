@@ -22,6 +22,7 @@ var app = express();
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
 app.engine('html', require('uinexpress').__express)
+app.engine('xml', require('uinexpress').__express)
 app.set('view engine', 'html')
 app.use(express.favicon());
 app.use(express.logger('dev'));
@@ -66,7 +67,11 @@ app.get('/composers/:categoryUri.html', mainRoute.bootstrap, categoryRoute.detai
 app.get('/:composerUri.html', mainRoute.bootstrap, composerRoute.landing);
 app.get('/:composerUri/:opusUri.html', mainRoute.bootstrap, composerRoute.opus);
 app.get('/:composerUri/:opusUri/:scoreId.html', mainRoute.bootstrap, composerRoute.score);
-app.get('/sitemap-categories.xml', mainRoute.bootstrap, sitemapRoute.category);
+app.get('/sitemap.xml', mainRoute.bootstrap, sitemapRoute.main);
+app.get('/sitemap-categories.xml', mainRoute.bootstrap, sitemapRoute.categories);
+app.get('/sitemap-periods.xml', mainRoute.bootstrap, sitemapRoute.periods);
+app.get('/sitemap-composers.xml', mainRoute.bootstrap, sitemapRoute.composers);
+app.get('/sitemap-instruments.xml', mainRoute.bootstrap, sitemapRoute.instruments);
 app.use(mainRoute.bootstrap, mainRoute.error404);
 
 
