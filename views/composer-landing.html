@@ -15,9 +15,9 @@
 <% if (wiki) { %>
 <h2>About</h2>
 <article class="row">
-    <ul class="four columns polaroid image valign-top">
+    <ul class="five columns polaroid image">
         <% if (composer.get('images') && composer.get('images').length) { %>
-        <li><img src="<%= composer.get('images')[0] %>"/></li>
+        <li class="valign-top"><img src="<%= composer.get('images')[0] %>"/></li>
         <% } else { %>
         <li>
             <div class="ad ad336x280 valign-top">
@@ -36,7 +36,7 @@
         </li>
         <% } %>
     </ul>
-    <div class="eight columns row">
+    <div class="seven columns row">
         <p><%= wiki.content || "There's no information available at this moment." %></p>
         <p>source: <a href="<%= wiki.source_url %>"><%=  wiki.source_name %></a></p>
         <% if (composer.get('images') && composer.get('images').length) { %>

@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /api
+Disallow: /api*
+Disallow: /init
+Disallow: /library
