@@ -18,7 +18,7 @@ exports.bootstrap = function(req, res, next){
     res.locals.title = '';
     res.locals.og_title = 'Damusiq: Musiq library for enthusiasts!';
     res.locals.og_image = 'http://damusiq.com/images/og-image.png';
-    res.locals.og_description = 'Find, share and download academic music scores for free!';
+    res.locals.og_description = 'Explore, Find, Listen and Share academic Music and Download scores for free!';
     next();
 };
 
