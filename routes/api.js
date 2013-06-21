@@ -11,24 +11,20 @@ var mongoose = require('mongoose'),
 exports.autocomplete = function(req, res){
     var url = require('url'),
         url_parts = url.parse(req.url, true),
-        q = url_parts.query.q.sanitize(),
+        q = (url_parts.query.q||'').sanitize(),
         _ = require('underscore');
 
     mongoose.Promise
         .when(
             mongoose.model('Composer')
                 .find({
-                    '$or': [
-                        { firstname: new RegExp('^' + q, 'i') },
-                        { lastname: new RegExp('^' + q, 'i') },
-                        { fullname: new RegExp('(^|\W)' + q, 'i') }
-                    ]
+                    fullname: new RegExp('(' + q.split(' ').join('|') + ')\w*', 'i')
                 }, 'uri fullname').exec()
             ,
             mongoose.model('ComposerCategory')
                 .find({
                     lang: req.lang,
-                    name: new RegExp('(^|\W)' + q, 'i')
+                    name: new RegExp('(' + q.split(' ').join('|') + ')\w*', 'i')
                 }, 'uri name').exec()
         )
         .addBack(function (err, composerResults, categoryResults) {

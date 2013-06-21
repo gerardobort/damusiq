@@ -19,6 +19,12 @@ exports.bootstrap = function(req, res, next){
     res.locals.og_title = 'Damusiq: Musiq library for enthusiasts!';
     res.locals.og_image = 'http://damusiq.com/images/og-image.png';
     res.locals.og_description = 'Explore, Find, Listen and Share academic Music and Download scores for free!';
+
+    var url = require('url'),
+        url_parts = url.parse(req.url, true);
+        q = url_parts.pathname.replace(/(\/|\.html)/g, ' ').trim();
+
+    res.locals.q = q;
     next();
 };
 
@@ -57,28 +63,39 @@ exports.homepage = function(req, res){
 exports.search = function(req, res){
     var url = require('url'),
         url_parts = url.parse(req.url, true),
-        q = url_parts.query.q.sanitize();
+        q = (url_parts.query.q||'').sanitize();
+
+    var composersPromise = new mongoose.Promise(),
+        categoriesPromise = new mongoose.Promise();
+
+        mongoose.model('Composer')
+            .textSearch(q, {
+                project: 'uri fullname',
+                filter: { },
+                limit: 20,
+                language: 'english',
+                lean: false
+            }, function (err, search) {
+                composersPromise.resolve(null, search||{});
+            });
+
+        mongoose.model('ComposerCategory')
+            .textSearch(q, {
+                project: 'uri name count',
+                filter: { lang: res.lang },
+                limit: 20,
+                language: 'english',
+                lean: false
+            }, function (err, search) {
+                categoriesPromise.resolve(null, search||{});
+            });
 
     mongoose.Promise
-        .when(
-            mongoose.model('Composer')
-                .find({
-                    '$or': [
-                        { firstname: new RegExp('^' + q, 'i') },
-                        { lastname: new RegExp('^' + q, 'i') },
-                        { fullname: new RegExp('(^|\W)' + q, 'i') }
-                    ]
-                }, 'uri fullname').exec()
-            ,
-            mongoose.model('ComposerCategory')
-                .find({
-                    lang: req.lang,
-                    name: new RegExp('(^|\W)' + q, 'i')
-                }, 'uri name').exec()
-        )
-        .addBack(function (err, composerResults, categoryResults) {
+        .when(composersPromise, categoriesPromise)
+        .addBack(function (err, composerSearch, categorySearch) {
 
-            composerResults = (composerResults||[]).map(function (composer) {
+            var composerResults = (composerSearch.results||[]).map(function (result) {
+                var composer = result.obj;
                 return {
                     type: 'composer',
                     id: composer.get('_id').toString(),
@@ -87,12 +104,14 @@ exports.search = function(req, res){
                 };
             });
 
-            categoryResults = (categoryResults||[]).map(function (category) {
+            var categoryResults = (categorySearch.results||[]).map(function (result) {
+                var category = result.obj;
                 return {
                     type: 'composer-category',
                     id: category.get('_id').toString(),
                     name: category.get('name'),
-                    url: global.helpers.url({ categoryUri: category.get('uri') })
+                    url: global.helpers.url({ categoryUri: category.get('uri') }),
+                    count: category.get('count')
                 };
             });
 
@@ -123,5 +142,5 @@ exports.googleVerification = function (req, res) {
 
 exports.error404 = function (req, res) {
     res.status(404);
-    res.render('error-404.html');
+    res.render('error-404.html', { q: 'something' });
 };

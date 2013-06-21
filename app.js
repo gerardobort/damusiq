@@ -75,7 +75,6 @@ app.get('/sitemap-composers.xml', mainRoute.bootstrap, sitemapRoute.composers);
 app.get('/sitemap-instruments.xml', mainRoute.bootstrap, sitemapRoute.instruments);
 app.use(mainRoute.bootstrap, mainRoute.error404);
 
-
 http.createServer(app).listen(app.get('port'), function(){
     console.log('Express server listening on port ' + app.get('port') + ' on ' + app.get('env') + ' env.');
 });

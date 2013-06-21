@@ -158,15 +158,18 @@ table tbody tr.no-hover:hover {
     margin-top: 1.25em;
 }
 .ad {
-    border: 1px dotted #ccc;
+    !border: 1px dotted #ccc;
 }
 .ad.ad336x280 {
     width: 336px;
     height: 280px;
 }
-
 .ad.ad728x90 {
     width: 728px;
     height: 90px;
     border: 0;
+}
+
+.btn.btn-search {
+    padding: 0 1em !important;
 }

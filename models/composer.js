@@ -4,10 +4,11 @@
  */
 
 var mongoose = require('mongoose'),
+    mongooseTextSearch = require('mongoose-text-search'),
     Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
 
-var ComposerSchema = new Schema({
+var ComposerSchema = mongoose.Schema({
     _id: ObjectId,
     uri: String,
     fullname: String,
@@ -21,6 +22,8 @@ var ComposerSchema = new Schema({
         { type: ObjectId, ref: 'Period' }
     ]
 });
+
+ComposerSchema.plugin(mongooseTextSearch);
 
 ComposerSchema.methods = {
     getBirthYear: function () {
