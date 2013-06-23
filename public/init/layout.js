@@ -66,4 +66,4 @@
 
     // ------------ Facebook
 
-}(jQuery));
+}(window.jQuery));
