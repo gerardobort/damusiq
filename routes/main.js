@@ -136,7 +136,7 @@ exports.advancedSearch = function (req, res) {
         p = 1*(url_parts.query.p||'1'),
         ipp = 20,
         name = (url_parts.query.name||'').sanitize(),
-        periods = url_parts.query['period[]'];
+        periods = url_parts.query['period[]']||'';
 
     var periodsPromise = new mongoose.Promise();
     var resultsPromise = new mongoose.Promise();
