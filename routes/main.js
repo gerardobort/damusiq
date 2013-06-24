@@ -128,6 +128,18 @@ exports.search = function(req, res){
         });
 };
 
+exports.advancedSearch = function (req, res) {
+    var url = require('url'),
+        url_parts = url.parse(req.url, true),
+        q = (url_parts.query.q||'').sanitize();
+
+    res.render('main-advancedSearch.html', {
+        q: q,
+        results: [],
+        scripts: ['init/main-advancedSearch.js']
+    });
+};
+
 exports.about = function (req, res) {
     res.render('main-about.html');
 };

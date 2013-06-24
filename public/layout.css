@@ -173,3 +173,10 @@ table tbody tr.no-hover:hover {
 .btn.btn-search {
     padding: 0 1em !important;
 }
+
+.advanced-search-panel {
+    display: none;
+}
+.advanced-search-panel.active {
+    display: block;
+}

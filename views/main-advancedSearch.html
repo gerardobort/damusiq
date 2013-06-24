@@ -1,0 +1,135 @@
+<h1>Advanced Search</h1>
+    <div class="row advanced-search-picker">
+        <h4><i class="icon-search"></i> - What are you looking for?</h4>
+        <ul class="five columns">
+            <li class="field">
+                <label class="radio" for="radio1-1">
+                    <input name="search_for" id="radio1-1" value="composer" type="radio">
+                    <span></span> Composer
+                </label>
+                <label class="radio" for="radio1-2">
+                    <input name="search_for" id="radio1-2" value="opus" type="radio">
+                    <span></span> Opus or Score
+                </label>
+            </li>
+        </ul>
+    </div>
+    <div class="row advanced-search-panel composer valign-top">
+        <form action="advanced-search.html" method="get">
+            <h4><i class="icon-user"></i> - Tell us about that composer...</h4>
+            <p>Fulfill only the fields you have certain information:</p>
+            <input type="hidden" name="search_for" value="composer">
+            <input type="hidden" name="p" value="1">
+            <ul class="twelve columns">
+                <li class="field">
+                    <label class="inline" for="text1">Composer's Name</label>
+                    <input class="wide text input" id="text1" type="text" placeholder="e.g. Ludwig Van Beethoven" />
+                </li>
+                <li class="field">
+                    <label class="checkbox checked inline" for="check1-1">
+                        <input name="period[]" id="check1-1" value="renaissance" type="checkbox" checked="checked">
+                        <span></span> Renaissance
+                    </label>
+                    <label class="checkbox inline" for="check1-2">
+                        <input name="period[]" id="check1-2" value="baroque" type="checkbox">
+                        <span></span> Baroque
+                    </label>
+                    <label class="checkbox inline" for="check1-3">
+                        <input name="period[]" id="check1-3" value="classical" type="checkbox">
+                        <span></span> Classical
+                    </label>
+                    <label class="checkbox inline" for="check1-4">
+                        <input name="period[]" id="check1-4" value="romantic" type="checkbox">
+                        <span></span> Romantic
+                    </label>
+                    <label class="checkbox inline" for="check1-5">
+                        <input name="period[]" id="check1-5" value="modern" type="checkbox">
+                        <span></span> Modern
+                    </label>
+                    <label class="checkbox inline" for="check1-6">
+                        <input name="period[]" id="check1-6" value="early 20th century" type="checkbox">
+                        <span></span> Early 20th Century
+                    </label>
+                </li>
+            </ul>
+        </form>
+    </div>
+    <div class="row advanced-search-panel opus valign-top">
+        <form action="advanced-search.html" method="get">
+            <h4><i class="icon-note-beamed"></i> - Tell us about that opus/score...</h4>
+            <p>Fulfill only the fields you have certain information:</p>
+            <input type="hidden" name="search_for" value="opus">
+            <input type="hidden" name="p" value="1">
+            <ul class="twelve columns">
+                <li class="field">
+                    <label class="inline" for="text2">Opus Identifier</label>
+                    <input class="wide text input" id="text2" type="text" placeholder="e.g. Woo1" />
+                </li>
+                <li class="field">
+                    <label class="inline" for="text3">Opus Title</label>
+                    <input class="wide text input" id="text3" type="text" placeholder="e.g. Piano Sonata" />
+                </li>
+                <li class="field">
+                    <label class="inline" for="text1">Composer's Name</label>
+                    <input class="wide text input" id="text1" type="text" placeholder="e.g. Ludwig Van Beethoven" />
+                </li>
+                <li class="field">
+                    <label class="checkbox checked inline" for="check2-1">
+                        <input name="period[]" id="check2-1" value="renaissance" type="checkbox" checked="checked">
+                        <span></span> Renaissance
+                    </label>
+                    <label class="checkbox inline" for="check2-2">
+                        <input name="period[]" id="check2-2" value="baroque" type="checkbox">
+                        <span></span> Baroque
+                    </label>
+                    <label class="checkbox inline" for="check2-3">
+                        <input name="period[]" id="check2-3" value="classical" type="checkbox">
+                        <span></span> Classical
+                    </label>
+                    <label class="checkbox inline" for="check2-4">
+                        <input name="period[]" id="check2-4" value="romantic" type="checkbox">
+                        <span></span> Romantic
+                    </label>
+                    <label class="checkbox inline" for="check2-5">
+                        <input name="period[]" id="check2-5" value="modern" type="checkbox">
+                        <span></span> Modern
+                    </label>
+                    <label class="checkbox inline" for="check2-6">
+                        <input name="period[]" id="check2-6" value="early 20th century" type="checkbox">
+                        <span></span> Early 20th Century
+                    </label>
+                </li>
+            </ul>
+        </form>
+    </div>
+    <button class="pretty medium primary btn" id="search"><a href="#">Search</a></button>
+
+
+<% if (q) { %>
+    <h2>Results for <strong><%= q %></strong></h2>
+    <div class="row">
+        <div class="twelve columns ad ad728x90 valign-top">
+            <script type="text/javascript"><!--
+            google_ad_client = "ca-pub-4000671410563799";
+            /* damusiq - search - skycraper horizontal */
+            google_ad_slot = "9858341215";
+            google_ad_width = 728;
+            google_ad_height = 90;
+            //-->
+            </script>
+            <script type="text/javascript"
+            src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
+            </script>
+        </div>
+    </div>
+
+    <ul>
+        <% results.forEach(function(result, i) { %>
+            <% if ('composer-category' === result.type) { %>
+            <li><i class="icon-users"></i><a href="<%= result.url %>"><%= result.name %></a> (<%= result.count %> composers)</li>
+            <% } else if ('composer' === result.type) { %>
+            <li><i class="icon-user"></i><a href="<%= result.url %>"><%= result.name %></a></li>
+            <% } %>
+        <% }) %>
+    </ul>
+<% } %>
