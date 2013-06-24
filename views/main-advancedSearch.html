@@ -23,7 +23,7 @@
             <ul class="twelve columns">
                 <li class="field">
                     <label class="inline" for="text1">Composer's Name</label>
-                    <input class="wide text input" id="text1" type="text" placeholder="e.g. Ludwig Van Beethoven" />
+                    <input class="wide text input" id="text1" type="text" name="name" placeholder="e.g. Ludwig Van Beethoven" />
                 </li>
                 <li class="field">
                     <label class="checkbox checked inline" for="check1-1">
@@ -63,15 +63,15 @@
             <ul class="twelve columns">
                 <li class="field">
                     <label class="inline" for="text2">Opus Identifier</label>
-                    <input class="wide text input" id="text2" type="text" placeholder="e.g. Woo1" />
+                    <input class="wide text input" id="text2" type="text" name="identifier" placeholder="e.g. Woo1" />
                 </li>
                 <li class="field">
                     <label class="inline" for="text3">Opus Title</label>
-                    <input class="wide text input" id="text3" type="text" placeholder="e.g. Piano Sonata" />
+                    <input class="wide text input" id="text3" type="text" name="title" placeholder="e.g. Piano Sonata" />
                 </li>
                 <li class="field">
                     <label class="inline" for="text1">Composer's Name</label>
-                    <input class="wide text input" id="text1" type="text" placeholder="e.g. Ludwig Van Beethoven" />
+                    <input class="wide text input" id="text1" type="text" name="composer_name" placeholder="e.g. Ludwig Van Beethoven" />
                 </li>
                 <li class="field">
                     <label class="checkbox checked inline" for="check2-1">
@@ -105,9 +105,10 @@
     <button class="pretty medium primary btn" id="search"><a href="#">Search</a></button>
 
 
-<% if (q) { %>
+<% if (results.length) { %>
+
     <h2>Results for <strong><%= q %></strong></h2>
-    <div class="row">
+    <!--div class="row">
         <div class="twelve columns ad ad728x90 valign-top">
             <script type="text/javascript"><!--
             google_ad_client = "ca-pub-4000671410563799";
@@ -115,21 +116,33 @@
             google_ad_slot = "9858341215";
             google_ad_width = 728;
             google_ad_height = 90;
-            //-->
+            //-- >
             </script>
             <script type="text/javascript"
             src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
             </script>
         </div>
-    </div>
+    </div-->
 
-    <ul>
+    <ol start="<%= (p-1)*ipp+1 %>">
+    <% if ('composer' === search_for) { %>
         <% results.forEach(function(result, i) { %>
-            <% if ('composer-category' === result.type) { %>
-            <li><i class="icon-users"></i><a href="<%= result.url %>"><%= result.name %></a> (<%= result.count %> composers)</li>
-            <% } else if ('composer' === result.type) { %>
-            <li><i class="icon-user"></i><a href="<%= result.url %>"><%= result.name %></a></li>
-            <% } %>
+        <li>
+            <i class="icon-user"></i>
+            <a href="<%= global.helpers.url({ composerUri: result.uri }) %>"><%= result.fullname %></a>
+            <%= result.period.map(function (per) {
+                return '<a class="primary label" href="' + 
+                    global.helpers.url({ periodUri: per.uri }) + '">' + per.name + '</a>';
+            }) %>
+        </li>
         <% }) %>
-    </ul>
+    <% } %>
+    </ol>
+    <% if (p > 1) { %>
+        <a class="medium pretty default btn" href="<%= originalUrl.replace('&p='+p, '&p='+(p-1)) %>"><i class="icon-left-open"></i>previous &nbsp;</a>
+    <% } %>
+    <% if (results.length === ipp) { %>
+        <a class="medium pretty default btn" href="<%= originalUrl.replace('&p='+p, '&p='+(p+1)) %>">&nbsp; next<i class="icon-right-open"></i></a>
+    <% } %>
+
 <% } %>

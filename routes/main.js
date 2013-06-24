@@ -22,7 +22,7 @@ exports.bootstrap = function(req, res, next){
 
     var url = require('url'),
         url_parts = url.parse(req.url, true);
-        q = url_parts.pathname.replace(/(\/|\.html)/g, ' ').trim();
+        q = url_parts.pathname.replace(/(\/|\.html|-)/g, ' ').trim();
 
     res.locals.q = q;
     next();
@@ -36,7 +36,7 @@ exports.homepage = function(req, res){
             { $group : { _id: '$_id', count: { $sum: 1 }, fullname: { $first: '$fullname' }, uri: { $first: '$uri'}  } },
             { $sort : { count: -1 } },
             { $limit : 15 }
-        ], function (req, composers) {
+        ], function (err, composers) {
             popularComposersPromise.resolve(null, composers);
         });
 
@@ -131,13 +131,66 @@ exports.search = function(req, res){
 exports.advancedSearch = function (req, res) {
     var url = require('url'),
         url_parts = url.parse(req.url, true),
-        q = (url_parts.query.q||'').sanitize();
+        _ = require('underscore'),
+        search_for = (url_parts.query.search_for||'').sanitize(),
+        p = 1*(url_parts.query.p||'1'),
+        ipp = 20,
+        name = (url_parts.query.name||'').sanitize(),
+        periods = url_parts.query['period[]'];
 
-    res.render('main-advancedSearch.html', {
-        q: q,
-        results: [],
-        scripts: ['init/main-advancedSearch.js']
-    });
+    var periodsPromise = new mongoose.Promise();
+    var resultsPromise = new mongoose.Promise();
+
+    if (periods.length) {
+        periodsPromise = mongoose.model('Period')
+            .find({ name: { $in: 'string' === typeof periods ? [periods] : periods } }, 'uri name')
+            .exec()
+    }
+    
+
+    if ('composer' === search_for) {
+        mongoose.Promise
+            .when(periodsPromise)
+            .addBack(function (err, periods) {
+                var periodNames = _(periods).pluck('_id');
+                var periodById = {};
+                periods.forEach(function (p) { periodById[p._id] = p; });
+                mongoose.model('Composer').aggregate([
+                        { $match : { fullname: new RegExp('(' + name.split(' ').join('|') + ').*', 'i') } },
+                        { $unwind : '$periods' },
+                        { $group : { _id: '$_id', fullname: { $first: '$fullname' }, uri: { $first: '$uri'}, 
+                            period: { $addToSet: '$periods' } } },
+                        { $sort : { fullname: 1 } },
+                        { $match : { 'period': { $in: periodNames } } },
+                        { $skip : (p-1)*ipp },
+                        { $limit : ipp }
+                    ], function (err, composers) {
+                        _(composers).each(function (composer) {
+                            composer.period = composer.period.map(function (pId) {
+                                return periodById[pId];
+                            }).filter(function (p) { return !!p; });
+                        });
+                        resultsPromise.resolve(null, composers||[]);
+                    });
+            });
+    } else if ('opus' === search_for) {
+        resultsPromise.resolve(null, []);
+    } else {
+        resultsPromise.resolve(null, []);
+    }
+
+    mongoose.Promise
+        .when(resultsPromise)
+        .addBack(function (err, results) {
+            res.render('main-advancedSearch.html', {
+                search_for: search_for,
+                p: p,
+                ipp: ipp,
+                originalUrl: req.originalUrl,
+                results: results,
+                scripts: ['init/main-advancedSearch.js']
+            });
+        });
 };
 
 exports.about = function (req, res) {
