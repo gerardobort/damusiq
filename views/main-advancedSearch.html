@@ -23,33 +23,15 @@
             <ul class="twelve columns">
                 <li class="field">
                     <label class="inline" for="text1">Composer's Name</label>
-                    <input class="wide text input" id="text1" type="text" name="name" placeholder="e.g. Ludwig Van Beethoven" />
+                    <input class="wide text input" id="text1" type="text" name="composer_name" placeholder="e.g. Ludwig Van Beethoven" />
                 </li>
                 <li class="field">
-                    <label class="checkbox checked inline" for="check1-1">
-                        <input name="period[]" id="check1-1" value="renaissance" type="checkbox" checked="checked">
-                        <span></span> Renaissance
+                <% _(allPeriods).each(function (period, i) { %>
+                    <label class="checkbox checked inline" for="check1-<%= i %>">
+                        <input name="period[]" id="check1-<%= i %>" value="<%= period.get('uri') %>" type="checkbox" checked="checked">
+                        <span></span> <%= period.get('name') %>
                     </label>
-                    <label class="checkbox inline" for="check1-2">
-                        <input name="period[]" id="check1-2" value="baroque" type="checkbox">
-                        <span></span> Baroque
-                    </label>
-                    <label class="checkbox inline" for="check1-3">
-                        <input name="period[]" id="check1-3" value="classical" type="checkbox">
-                        <span></span> Classical
-                    </label>
-                    <label class="checkbox inline" for="check1-4">
-                        <input name="period[]" id="check1-4" value="romantic" type="checkbox">
-                        <span></span> Romantic
-                    </label>
-                    <label class="checkbox inline" for="check1-5">
-                        <input name="period[]" id="check1-5" value="modern" type="checkbox">
-                        <span></span> Modern
-                    </label>
-                    <label class="checkbox inline" for="check1-6">
-                        <input name="period[]" id="check1-6" value="early 20th century" type="checkbox">
-                        <span></span> Early 20th Century
-                    </label>
+                <% }) %>
                 </li>
             </ul>
         </form>
@@ -58,46 +40,36 @@
         <form action="advanced-search.html" method="get">
             <h4><i class="icon-note-beamed"></i> - Tell us about that opus/score...</h4>
             <p>Fulfill only the fields you have certain information:</p>
-            <input type="hidden" name="search_for" value="opus">
+            <input type="hidden" name="search_for" value="score">
             <input type="hidden" name="p" value="1">
             <ul class="twelve columns">
                 <li class="field">
                     <label class="inline" for="text2">Opus Identifier</label>
-                    <input class="wide text input" id="text2" type="text" name="identifier" placeholder="e.g. Woo1" />
+                    <input class="wide text input" id="text2" type="text" name="opus_identifier" placeholder="e.g. Woo1" />
                 </li>
                 <li class="field">
                     <label class="inline" for="text3">Opus Title</label>
-                    <input class="wide text input" id="text3" type="text" name="title" placeholder="e.g. Piano Sonata" />
+                    <input class="wide text input" id="text3" type="text" name="score_title" placeholder="e.g. Piano Sonata" />
                 </li>
                 <li class="field">
                     <label class="inline" for="text1">Composer's Name</label>
                     <input class="wide text input" id="text1" type="text" name="composer_name" placeholder="e.g. Ludwig Van Beethoven" />
                 </li>
                 <li class="field">
-                    <label class="checkbox checked inline" for="check2-1">
-                        <input name="period[]" id="check2-1" value="renaissance" type="checkbox" checked="checked">
-                        <span></span> Renaissance
+                <% _(allPeriods).each(function (period, i) { %>
+                    <label class="checkbox checked inline" for="check2-<%= i %>">
+                        <input name="period[]" id="check2-<%= i %>" value="<%= period.get('uri') %>" type="checkbox" checked="checked">
+                        <span></span> <%= period.get('name') %>
                     </label>
-                    <label class="checkbox inline" for="check2-2">
-                        <input name="period[]" id="check2-2" value="baroque" type="checkbox">
-                        <span></span> Baroque
+                <% }) %>
+                </li>
+                <li class="field">
+                <% _(allInstruments).each(function (instrument, i) { %>
+                    <label class="checkbox inline" for="check2-<%= i %>">
+                        <input name="instrument[]" id="check3-<%= i %>" value="<%= instrument.get('uri') %>" type="checkbox">
+                        <span></span> <%= instrument.get('name') %>
                     </label>
-                    <label class="checkbox inline" for="check2-3">
-                        <input name="period[]" id="check2-3" value="classical" type="checkbox">
-                        <span></span> Classical
-                    </label>
-                    <label class="checkbox inline" for="check2-4">
-                        <input name="period[]" id="check2-4" value="romantic" type="checkbox">
-                        <span></span> Romantic
-                    </label>
-                    <label class="checkbox inline" for="check2-5">
-                        <input name="period[]" id="check2-5" value="modern" type="checkbox">
-                        <span></span> Modern
-                    </label>
-                    <label class="checkbox inline" for="check2-6">
-                        <input name="period[]" id="check2-6" value="early 20th century" type="checkbox">
-                        <span></span> Early 20th Century
-                    </label>
+                <% }) %>
                 </li>
             </ul>
         </form>
@@ -129,11 +101,27 @@
         <% results.forEach(function(result, i) { %>
         <li>
             <i class="icon-user"></i>
-            <a href="<%= global.helpers.url({ composerUri: result.uri }) %>"><%= result.fullname %></a>
-            <%= result.period.map(function (per) {
+            <a href="<%= global.helpers.url({ composerUri: result.composer.get('uri') }) %>"><%= result.composer.get('fullname') %></a>
+            <%= result.periods.map(function (per) {
                 return '<a class="primary label" href="' + 
                     global.helpers.url({ periodUri: per.uri }) + '">' + per.name + '</a>';
-            }) %>
+            }).join(' ') %>
+        </li>
+        <% }) %>
+    <% } else if ('score' === search_for) { %>
+        <% results.forEach(function(result, i) { %>
+        <li>
+            <i class="icon-note-beamed"></i>
+            <a href="<%= global.helpers.url({ composerUri: result.composer.get('uri'), opusUri: result.opus.get('uri'), scoreId: result.score.get('_id').toString() }) %>"><%= result.composer.get('fullname') %>: <%= result.opus.get('identifier') ? result.opus.get('identifier') + ' - ' : '' %><%= result.score.get('name') %></a>
+            <span class="primary label"><%= result.score.get('format') %></span>
+            <%= result.instruments.map(function (sco) {
+                return '<a class="secondary label" href="' + 
+                    global.helpers.url({ instrumentUri: sco.uri }) + '">' + sco.name + '</a>';
+            }).join(' ') %>
+            <%= result.periods.map(function (per) {
+                return '<a class="default label" href="' + 
+                    global.helpers.url({ periodUri: per.uri }) + '">' + per.name + '</a>';
+            }).join(' ') %>
         </li>
         <% }) %>
     <% } %>

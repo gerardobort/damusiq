@@ -135,59 +135,148 @@ exports.advancedSearch = function (req, res) {
         search_for = (url_parts.query.search_for||'').sanitize(),
         p = 1*(url_parts.query.p||'1'),
         ipp = 20,
-        name = (url_parts.query.name||'').sanitize(),
-        periods = url_parts.query['period[]']||'';
+        composer_name = (url_parts.query.composer_name||'').sanitize(),
+        opus_identifier = (url_parts.query.opus_identifier||'').sanitize(),
+        score_title = (url_parts.query.score_title||'').sanitize(),
+        periods = url_parts.query['period[]']||'',
+        instruments = url_parts.query['instrument[]']||'';
 
-    var periodsPromise = new mongoose.Promise();
     var resultsPromise = new mongoose.Promise();
 
-    if (periods.length) {
-        periodsPromise = mongoose.model('Period')
-            .find({ name: { $in: 'string' === typeof periods ? [periods] : periods } }, 'uri name')
-            .exec()
-    }
-    
+    var periodsPromise = mongoose.model('Period')
+            .find({ uri: { $in: 'string' === typeof periods ? [periods] : periods } }, 'uri name')
+            .sort({ order_index: 1 })
+            .limit(100)
+            .exec();
 
-    if ('composer' === search_for) {
-        mongoose.Promise
-            .when(periodsPromise)
-            .addBack(function (err, periods) {
-                var periodNames = _(periods).pluck('_id');
-                var periodById = {};
-                periods.forEach(function (p) { periodById[p._id] = p; });
-                mongoose.model('Composer').aggregate([
-                        { $match : { fullname: new RegExp('(' + name.split(' ').join('|') + ').*', 'i') } },
-                        { $unwind : '$periods' },
-                        { $group : { _id: '$_id', fullname: { $first: '$fullname' }, uri: { $first: '$uri'}, 
-                            period: { $addToSet: '$periods' } } },
-                        { $sort : { fullname: 1 } },
-                        { $match : { 'period': { $in: periodNames } } },
-                        { $skip : (p-1)*ipp },
-                        { $limit : ipp }
-                    ], function (err, composers) {
-                        _(composers).each(function (composer) {
-                            composer.period = composer.period.map(function (pId) {
-                                return periodById[pId];
-                            }).filter(function (p) { return !!p; });
-                        });
-                        resultsPromise.resolve(null, composers||[]);
-                    });
-            });
-    } else if ('opus' === search_for) {
-        resultsPromise.resolve(null, []);
-    } else {
-        resultsPromise.resolve(null, []);
-    }
+    var allPeriodsPromise = mongoose.model('Period')
+            .find({}, 'uri name')
+            .sort({ order_index: 1 })
+            .limit(100)
+            .exec();
+
+    var allInstrumentsPromise = mongoose.model('Instrument')
+            .find({ }, 'uri name')
+            .sort({ name: 1 })
+            .limit(100)
+            .exec();
 
     mongoose.Promise
-        .when(resultsPromise)
-        .addBack(function (err, results) {
+        .when(periodsPromise)
+        .addBack(function (err, periods) {
+            var periodById = {};
+            periods.forEach(function (p) { periodById[p._id] = p; });
+
+            if ('composer' === search_for) {
+                mongoose.model('Composer').find({
+                                fullname: new RegExp('(' + composer_name.split(' ').join('|') + ').*', 'i'),
+                                periods: periods ? { $in: _(periods).pluck('_id') } : { $ne: null }
+                            }, 
+                            'fullname uri periods'
+                        )
+                        .populate('periods')
+                        .skip((p-1)*ipp)
+                        .limit(ipp)
+                        .exec(function (err, composers) {
+                            var results = [];
+                            _(composers).each(function (composer) {
+                                results.push({
+                                    composer: composer,
+                                    periods: composer.get('periods')
+                                });
+                            });
+                            resultsPromise.resolve(null, results);
+                        });
+            } else if ('score' === search_for) {
+                var composersPromise = new mongoose.Promise();
+                if (composer_name) { // skipping: || periods
+                    composersPromise = mongoose.model('Composer')
+                        .find({
+                                fullname: new RegExp('(' + composer_name.split(' ').join('|') + ').*', 'i'),
+                                periods: periods ? { $in: _(periods).pluck('_id') } : { $ne: null }
+                            },
+                            'fullname uri periods'
+                        )
+                        .limit(100)
+                        .exec();
+                } else {
+                    composersPromise.resolve(null, null);
+                }
+
+                var opusesPromise = new mongoose.Promise();
+                if (opus_identifier) {
+                    opusesPromise = mongoose.model('Opus')
+                        .find({
+                                identifier: new RegExp('(' + opus_identifier.split(' ').join('|') + ').*', 'i'),
+                            },
+                            ''
+                        )
+                        .limit(100)
+                        .exec();
+                } else {
+                    opusesPromise.resolve(null, null);
+                }
+
+                var instrumentsPromise = new mongoose.Promise();
+                if (instruments) {
+                    instrumentsPromise = mongoose.model('Instrument')
+                        .find({ uri: { $in: 'string' === typeof instruments ? [instruments] : instruments } }, 'uri name')
+                        .sort({ name: 1 })
+                        .limit(100)
+                        .exec();
+                } else {
+                    instrumentsPromise.resolve(null, null);
+                }
+
+                mongoose.Promise
+                    .when(composersPromise, opusesPromise, instrumentsPromise)
+                    .addBack(function (err, composers, opuses, instruments) {
+                        mongoose.model('Score')
+                                .find({
+                                    name: new RegExp('(' + score_title.split(' ').join('|') + ').*', 'i'),
+                                    composer: composers ? { $in: _(composers).pluck('_id') } : { $ne: null },
+                                    opus: opuses ? { $in: _(opuses).pluck('_id') } : { $ne: null },
+                                    instruments: instruments ? { $in: _(instruments).pluck('_id') } : { $ne: null },
+                                    format: 'pdf' // TODO enable other formats
+                                })
+                                .sort({ identifier: 1, name: 1 })
+                                .skip((p-1)*ipp)
+                                .limit(ipp)
+                                .populate('instruments', 'uri name')
+                                .populate('composer', 'uri fullname')
+                                .populate('opus', 'uri periods identifier')
+                                .exec(function (err, scores) {
+                                    var results = [];
+                                    _(scores).each(function (score) {
+                                        results.push({
+                                            opus: score.get('opus'),
+                                            score: score,
+                                            instruments: score.get('instruments')||[],
+                                            composer: score.get('composer'),
+                                            periods: score.get('opus.periods').map(function (pId) {
+                                                    return periodById[pId];
+                                                }).filter(function (p) { return !!p; })
+                                        });
+                                    });
+                                    resultsPromise.resolve(null, results);
+                                });
+                    });
+            } else {
+                resultsPromise.resolve(null, []);
+            }
+        });
+
+    mongoose.Promise
+        .when(resultsPromise, allPeriodsPromise, allInstrumentsPromise)
+        .addBack(function (err, results, allPeriods, allInstruments) {
             res.render('main-advancedSearch.html', {
                 search_for: search_for,
                 p: p,
                 ipp: ipp,
                 originalUrl: req.originalUrl,
                 results: results,
+                allPeriods: allPeriods,
+                allInstruments: allInstruments,
                 scripts: ['init/main-advancedSearch.js']
             });
         });
