@@ -132,19 +132,22 @@ exports.advancedSearch = function (req, res) {
     var url = require('url'),
         url_parts = url.parse(req.url, true),
         _ = require('underscore'),
-        search_for = (url_parts.query.search_for||'').sanitize(),
         p = 1*(url_parts.query.p||'1'),
         ipp = 20,
-        composer_name = (url_parts.query.composer_name||'').sanitize(),
-        opus_identifier = (url_parts.query.opus_identifier||'').sanitize(),
-        score_title = (url_parts.query.score_title||'').sanitize(),
-        periods = url_parts.query['period[]']||'',
-        instruments = url_parts.query['instrument[]']||'';
+        arg_search_for = (url_parts.query.search_for||'').sanitize(),
+        arg_composer_name = (url_parts.query.composer_name||'').sanitize(),
+        arg_opus_identifier = (url_parts.query.opus_identifier||'').sanitize(),
+        arg_score_title = (url_parts.query.score_title||'').sanitize(),
+        arg_periods = url_parts.query['period[]']||'',
+        arg_instruments = url_parts.query['instrument[]']||'';
+
+    arg_periods = arg_periods ? ('string' === typeof arg_periods ? [arg_periods] : arg_periods) : [];
+    arg_instruments = arg_instruments ? ('string' === typeof arg_instruments ? [arg_instruments] : arg_instruments) : [];
 
     var resultsPromise = new mongoose.Promise();
 
     var periodsPromise = mongoose.model('Period')
-            .find({ uri: { $in: 'string' === typeof periods ? [periods] : periods } }, 'uri name')
+            .find({ uri: { $in: arg_periods } }, 'uri name')
             .sort({ order_index: 1 })
             .limit(100)
             .exec();
@@ -167,9 +170,9 @@ exports.advancedSearch = function (req, res) {
             var periodById = {};
             periods.forEach(function (p) { periodById[p._id] = p; });
 
-            if ('composer' === search_for) {
+            if ('composer' === arg_search_for) {
                 mongoose.model('Composer').find({
-                                fullname: new RegExp('(' + composer_name.split(' ').join('|') + ').*', 'i'),
+                                fullname: new RegExp('(' + arg_composer_name.split(' ').join('|') + ').*', 'i'),
                                 periods: periods ? { $in: _(periods).pluck('_id') } : { $ne: null }
                             }, 
                             'fullname uri periods'
@@ -187,12 +190,12 @@ exports.advancedSearch = function (req, res) {
                             });
                             resultsPromise.resolve(null, results);
                         });
-            } else if ('score' === search_for) {
+            } else if ('score' === arg_search_for) {
                 var composersPromise = new mongoose.Promise();
-                if (composer_name) { // skipping: || periods
+                if (arg_composer_name) { // skipping: || periods
                     composersPromise = mongoose.model('Composer')
                         .find({
-                                fullname: new RegExp('(' + composer_name.split(' ').join('|') + ').*', 'i'),
+                                fullname: new RegExp('(' + arg_composer_name.split(' ').join('|') + ').*', 'i'),
                                 periods: periods ? { $in: _(periods).pluck('_id') } : { $ne: null }
                             },
                             'fullname uri periods'
@@ -204,10 +207,10 @@ exports.advancedSearch = function (req, res) {
                 }
 
                 var opusesPromise = new mongoose.Promise();
-                if (opus_identifier) {
+                if (arg_opus_identifier) {
                     opusesPromise = mongoose.model('Opus')
                         .find({
-                                identifier: new RegExp('(' + opus_identifier.split(' ').join('|') + ').*', 'i'),
+                                identifier: new RegExp('(' + arg_opus_identifier.split(' ').join('|') + ').*', 'i'),
                             },
                             ''
                         )
@@ -218,9 +221,9 @@ exports.advancedSearch = function (req, res) {
                 }
 
                 var instrumentsPromise = new mongoose.Promise();
-                if (instruments) {
+                if (arg_instruments) {
                     instrumentsPromise = mongoose.model('Instrument')
-                        .find({ uri: { $in: 'string' === typeof instruments ? [instruments] : instruments } }, 'uri name')
+                        .find({ uri: { $in: arg_instruments } }, 'uri name')
                         .sort({ name: 1 })
                         .limit(100)
                         .exec();
@@ -233,7 +236,7 @@ exports.advancedSearch = function (req, res) {
                     .addBack(function (err, composers, opuses, instruments) {
                         mongoose.model('Score')
                                 .find({
-                                    name: new RegExp('(' + score_title.split(' ').join('|') + ').*', 'i'),
+                                    name: new RegExp('(' + arg_score_title.split(' ').join('|') + ').*', 'i'),
                                     composer: composers ? { $in: _(composers).pluck('_id') } : { $ne: null },
                                     opus: opuses ? { $in: _(opuses).pluck('_id') } : { $ne: null },
                                     instruments: instruments ? { $in: _(instruments).pluck('_id') } : { $ne: null },
@@ -270,13 +273,18 @@ exports.advancedSearch = function (req, res) {
         .when(resultsPromise, allPeriodsPromise, allInstrumentsPromise)
         .addBack(function (err, results, allPeriods, allInstruments) {
             res.render('main-advancedSearch.html', {
-                search_for: search_for,
                 p: p,
                 ipp: ipp,
                 originalUrl: req.originalUrl,
                 results: results,
                 allPeriods: allPeriods,
                 allInstruments: allInstruments,
+                search_for: arg_search_for,
+                composer_name: arg_composer_name,
+                opus_identifier: arg_opus_identifier,
+                score_title: arg_score_title,
+                periods: arg_periods,
+                instruments: arg_instruments,
                 scripts: ['init/main-advancedSearch.js']
             });
         });
