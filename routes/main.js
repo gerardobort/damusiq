@@ -265,7 +265,7 @@ exports.advancedSearch = function (req, res) {
                                 });
                     });
             } else {
-                resultsPromise.resolve(null, []);
+                resultsPromise.resolve(null, null);
             }
         });
 
@@ -285,17 +285,18 @@ exports.advancedSearch = function (req, res) {
                 score_title: arg_score_title,
                 periods: arg_periods,
                 instruments: arg_instruments,
+                title: 'Advanced Search',
                 scripts: ['init/main-advancedSearch.js']
             });
         });
 };
 
 exports.about = function (req, res) {
-    res.render('main-about.html');
+    res.render('main-about.html', { title: 'About' });
 };
 
 exports.legal = function (req, res) {
-    res.render('main-legal.html');
+    res.render('main-legal.html', { title: 'Privacy Policy' });
 };
 
 exports.googleVerification = function (req, res) {
@@ -304,5 +305,5 @@ exports.googleVerification = function (req, res) {
 
 exports.error404 = function (req, res) {
     res.status(404);
-    res.render('error-404.html', { q: 'something' });
+    res.render('error-404.html', { q: 'something', title: 'Not Found' });
 };

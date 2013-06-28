@@ -1,106 +1,13 @@
 <h1>Advanced Search</h1>
-    <div class="row advanced-search-picker">
-        <h4><i class="icon-search"></i> - What are you looking for?</h4>
-        <ul class="five columns">
-            <li class="field">
-                <label class="radio <%= search_for === 'composer' ? ' checked' : '' %>" for="radio1-1">
-                    <input name="search_for" id="radio1-1" value="composer" type="radio"
-                        <%= search_for === 'composer' ? 'checked="checked"' : '' %>
-                        >
-                    <span></span> Composer
-                </label>
-                <label class="radio <%= search_for === 'score' ? ' checked' : '' %>" for="radio1-2">
-                    <input name="search_for" id="radio1-2" value="opus" type="radio"
-                        <%= search_for === 'score' ? 'checked="checked"' : '' %>
-                        >
-                    <span></span> Opus or Score
-                </label>
-            </li>
-        </ul>
-    </div>
-    <div class="row advanced-search-panel composer valign-top">
-        <form action="advanced-search.html" method="get">
-            <h4><i class="icon-user"></i> - Tell us about that composer...</h4>
-            <p>Fulfill only the fields you have certain information:</p>
-            <input type="hidden" name="search_for" value="composer">
-            <input type="hidden" name="p" value="1">
-            <ul class="twelve columns">
-                <li class="field">
-                    <label class="inline" for="text1">Composer's Name</label>
-                    <input class="wide text input" id="text1" type="text" name="composer_name" placeholder="e.g. Ludwig Van Beethoven"
-                        value="<%= composer_name %>"
-                        >
-                </li>
-                <li class="field">
-                    <label>Historical Music Periods</label>
-                <% _(allPeriods).each(function (period, i) { %>
-                    <label class="checkbox <%= periods.length && !~periods.indexOf(period.get('uri')) ? '' : 'checked' %> inline" for="check1-<%= i %>">
-                        <input name="period[]" id="check1-<%= i %>" value="<%= period.get('uri') %>" type="checkbox" 
-                            <%= periods.length && !~periods.indexOf(period.get('uri')) ? '' : 'checked="checked"' %>
-                            >
-                        <span></span> <%= period.get('name') %>
-                    </label>
-                <% }) %>
-                </li>
-            </ul>
-        </form>
-    </div>
-    <div class="row advanced-search-panel opus valign-top">
-        <form action="advanced-search.html" method="get">
-            <h4><i class="icon-note-beamed"></i> - Tell us about that opus/score...</h4>
-            <p>Fulfill only the fields you have certain information:</p>
-            <input type="hidden" name="search_for" value="score">
-            <input type="hidden" name="p" value="1">
-            <ul class="twelve columns">
-                <li class="field">
-                    <label class="inline" for="text2">Opus Identifier</label>
-                    <input class="wide text input" id="text2" type="text" name="opus_identifier" placeholder="e.g. BWV 96"
-                        value="<%= opus_identifier %>"
-                        >
-                </li>
-                <li class="field">
-                    <label class="inline" for="text3">Opus Title</label>
-                    <input class="wide text input" id="text3" type="text" name="score_title" placeholder="e.g. Herr Christ, der einge Gottessohn"
-                        value="<%= score_title %>"
-                        >
-                </li>
-                <li class="field">
-                    <label class="inline" for="text1">Composer's Name</label>
-                    <input class="wide text input" id="text1" type="text" name="composer_name" placeholder="e.g. Johann Sebastian Bach"
-                        value="<%= composer_name %>"
-                        >
-                </li>
-                <li class="field">
-                    <label>Historical Music Periods</label>
-                <% _(allPeriods).each(function (period, i) { %>
-                    <label class="checkbox <%= periods.length && !~periods.indexOf(period.get('uri')) ? '' : 'checked' %> inline" for="check2-<%= i %>">
-                        <input name="period[]" id="check2-<%= i %>" value="<%= period.get('uri') %>" type="checkbox" 
-                            <%= periods.length && !~periods.indexOf(period.get('uri')) ? '' : 'checked="checked"' %>
-                            >
-                        <span></span> <%= period.get('name') %>
-                    </label>
-                <% }) %>
-                </li>
-                <li class="field">
-                    <label>Instruments</label>
-                <% _(allInstruments).each(function (instrument, i) { %>
-                    <label class="checkbox <%= instruments.length && !!~instruments.indexOf(instrument.get('uri')) ? 'checked' : '' %> inline" for="check2-<%= i %>">
-                        <input name="instrument[]" id="check3-<%= i %>" value="<%= instrument.get('uri') %>" type="checkbox"
-                            <%= instruments.length && !!~instruments.indexOf(instrument.get('uri')) ? 'checked="checked"' : '' %>
-                            >
-                        <span></span> <%= instrument.get('name') %>
-                    </label>
-                <% }) %>
-                </li>
-            </ul>
-        </form>
-    </div>
-    <button class="pretty medium primary btn" id="search"><a href="#">Search</a></button>
 
+<% if (results && !results.length) { %>
+    <p>We are sorry, we have no results for your search.</p>
+    <hr />
+<% } %>
 
-<% if (results.length) { %>
+<% if (results && results.length) { %>
 
-    <h2>Results for <strong><%= q %></strong></h2>
+    <h2>Results</h2>
     <!--div class="row">
         <div class="twelve columns ad ad728x90 valign-top">
             <script type="text/javascript"><!--
@@ -153,5 +60,111 @@
     <% if (results.length === ipp) { %>
         <a class="medium pretty default btn" href="<%= originalUrl.replace('&p='+p, '&p='+(p+1)) %>">&nbsp; next<i class="icon-right-open"></i></a>
     <% } %>
+    <hr />
 
 <% } %>
+
+
+    <div class="row advanced-search-picker">
+        <h4><i class="icon-search"></i> - What are you looking for?</h4>
+        <ul class="five columns">
+            <li class="field">
+                <label class="radio <%= search_for === 'composer' ? ' checked' : '' %>" for="radio1-1">
+                    <input name="search_for" id="radio1-1" value="composer" type="radio"
+                        <%= search_for === 'composer' ? 'checked="checked"' : '' %>
+                        >
+                    <span></span> Composer
+                </label>
+                <label class="radio <%= search_for === 'score' ? ' checked' : '' %>" for="radio1-2">
+                    <input name="search_for" id="radio1-2" value="opus" type="radio"
+                        <%= search_for === 'score' ? 'checked="checked"' : '' %>
+                        >
+                    <span></span> Opus or Score
+                </label>
+            </li>
+        </ul>
+    </div>
+    <div class="row advanced-search-panel composer valign-top">
+        <form action="advanced-search.html" method="get">
+            <h4><i class="icon-user"></i> - Tell us about that composer...</h4>
+            <p>Fulfill only the fields you have certain information:</p>
+            <input type="hidden" name="search_for" value="composer">
+            <input type="hidden" name="p" value="1">
+            <ul class="twelve columns">
+                <li class="field">
+                    <label class="inline" for="text1">Composer's Name</label>
+                    <input class="wide text input" id="text1" type="text" name="composer_name" placeholder="e.g. Ludwig Van Beethoven"
+                        value="<%= composer_name %>"
+                        >
+                </li>
+                <li class="field">
+                    <label>Historical Music Periods</label>
+                <% _(allPeriods).each(function (period, i) { %>
+                    <label class="checkbox <%= periods.length && !~periods.indexOf(period.get('uri')) ? '' : 'checked' %> inline" for="check1-<%= i %>">
+                        <input name="period[]" id="check1-<%= i %>" value="<%= period.get('uri') %>" type="checkbox" 
+                            <%= periods.length && !~periods.indexOf(period.get('uri')) ? '' : 'checked="checked"' %>
+                            >
+                        <span></span> <%= period.get('name') %>
+                    </label>
+                <% }) %>
+                </li>
+            </ul>
+            <div class="pretty medium primary btn">
+                <input type="submit" id="search_composer" value="Search">
+            </div>
+        </form>
+    </div>
+    <div class="row advanced-search-panel opus valign-top">
+        <form action="advanced-search.html" method="get">
+            <h4><i class="icon-note-beamed"></i> - Tell us about that opus/score...</h4>
+            <p>Fulfill only the fields you have certain information:</p>
+            <input type="hidden" name="search_for" value="score">
+            <input type="hidden" name="p" value="1">
+            <ul class="twelve columns">
+                <li class="field">
+                    <label class="inline" for="text2">Opus Identifier</label>
+                    <input class="wide text input" id="text2" type="text" name="opus_identifier" placeholder="e.g. BWV 96"
+                        value="<%= opus_identifier %>"
+                        >
+                </li>
+                <li class="field">
+                    <label class="inline" for="text3">Opus Title</label>
+                    <input class="wide text input" id="text3" type="text" name="score_title" placeholder="e.g. Herr Christ, der einge Gottessohn"
+                        value="<%= score_title %>"
+                        >
+                </li>
+                <li class="field">
+                    <label class="inline" for="text1">Composer's Name</label>
+                    <input class="wide text input" id="text1" type="text" name="composer_name" placeholder="e.g. Johann Sebastian Bach"
+                        value="<%= composer_name %>"
+                        >
+                </li>
+                <li class="field">
+                    <label>Historical Music Periods</label>
+                <% _(allPeriods).each(function (period, i) { %>
+                    <label class="checkbox <%= periods.length && !~periods.indexOf(period.get('uri')) ? '' : 'checked' %> inline" for="check2-<%= i %>">
+                        <input name="period[]" id="check2-<%= i %>" value="<%= period.get('uri') %>" type="checkbox" 
+                            <%= periods.length && !~periods.indexOf(period.get('uri')) ? '' : 'checked="checked"' %>
+                            >
+                        <span></span> <%= period.get('name') %>
+                    </label>
+                <% }) %>
+                </li>
+                <li class="field">
+                    <label>Instruments</label>
+                <% _(allInstruments).each(function (instrument, i) { %>
+                    <label class="checkbox <%= instruments.length && !!~instruments.indexOf(instrument.get('uri')) ? 'checked' : '' %> inline" for="check2-<%= i %>">
+                        <input name="instrument[]" id="check3-<%= i %>" value="<%= instrument.get('uri') %>" type="checkbox"
+                            <%= instruments.length && !!~instruments.indexOf(instrument.get('uri')) ? 'checked="checked"' : '' %>
+                            >
+                        <span></span> <%= instrument.get('name') %>
+                    </label>
+                <% }) %>
+                </li>
+            </ul>
+            <div class="pretty medium primary btn">
+                <input type="submit" id="search_score" value="Search">
+            </div>
+        </form>
+    </div>
+
