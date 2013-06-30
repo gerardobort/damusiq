@@ -13,7 +13,7 @@
 <h2>Scores</h2>
 <table class="row">
     <thead class="row">
-        <tr class="twelve columns row">
+        <tr class="row">
             <th class="three columns">Preview</th>
             <th class="two columns">Part</th>
             <th class="three columns">Additional Info</th>
@@ -23,7 +23,7 @@
     </thead>
     <tbody>
     <% scores.forEach(function(score, i) { %>
-    <tr>
+    <tr class="row">
         <!--a href="<%= global.helpers.url({ composerUri: opus.get('composer.uri'), opusUri: opus.get('uri'), scoreUri: score.get('uri') }) %>"><%= score.get('name') %></a-->
         <td class="three columns">
             <img src="http://www.pdf-scores.com/previews/<%= opus.get('composer.uri') %>/<%= opus.get('_crawler_id') %>/<%= score.get('_crawler_id') %>.jpg" width="180" />
