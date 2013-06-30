@@ -17,6 +17,7 @@ exports.landing = function(req, res){
             res.render('period-landing.html', {
                 periods: periods,
                 title: 'Periods',
+                keywords: ['historical music periods', 'music periods'],
                 og_title: 'Periods',
                 scripts: [
                 ]
@@ -40,6 +41,11 @@ exports.detail = function(req, res){
                             composers: composers,
                             period: period,
                             title: period.get('name'),
+                            keywords: [
+                                period.get('name') + ' music',
+                                period.get('name') + ' composers', 
+                                'composers of ' + period.get('name') + ' era'
+                            ],
                             og_title: period.get('name'),
                             scripts: [
                             ]

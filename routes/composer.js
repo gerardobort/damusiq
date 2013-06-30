@@ -56,6 +56,11 @@ exports.landing = function(req, res){
         .exec(function (err, composer) {
             if (composer) {
                 data.title = composer.get('fullname');
+                data.keywords = [
+                    composer.get('fullname'),
+                    (composer.get('lastname')||composer.get('fullname')) + ' scores pdf',
+                    composer.get('fullname') + ' music scores'
+                ];
                 data.composer = composer;
                 data.wiki = composer.get('wiki.' + req.lang);
                 data.categories = composer.get('categories');
@@ -107,8 +112,16 @@ exports.opus = function(req, res){
                                 .find({ opus: opus.get('_id') })
                                 .populate('instruments')
                                 .exec(function (err, scores) {
-
                                     data.title = opus.get('name') + ' by ' + composer.get('fullname'),
+                                    data.keywords = [
+                                        (composer.get('lastname')||composer.get('fullname')) + ' ' 
+                                            + opus.get('name').replace(/,( *)/g, '$1'),
+                                        (composer.get('lastname')||composer.get('fullname')) + ' '
+                                            + (opus.get('identifier')||'') + ' ' 
+                                            + opus.get('name').replace(/,( *)/g, '$1') + ' pdf',
+                                        opus.get('name').replace(/,( *)/g, '$1') + ' ' 
+                                            + composer.get('lastname') + ' free pdf'
+                                    ];
                                     data.opus = opus,
                                     data.scores = scores;
                                     completeRequest();
@@ -139,8 +152,22 @@ exports.score = function(req, res) {
         .exec(function (err, score) {
             var data = {};
             if (score) {
+                var keywords = [
+                    (score.get('composer.lastname')||score.get('composer.fullname')) 
+                        + ' ' + score.get('opus.name').replace(/,( *)/g, '$1'),
+                    score.get('opus.name').replace(/,( *)/g, '$1') + ' pdf'
+                ];
+                if (score.get('opus.identifier')) {
+                    keywords.push(score.get('composer.fullname') + ' ' 
+                        + score.get('opus.identifier').replace(/,( *)/g, '$1') + ' pdf')
+                }
+                keywords = keywords.concat(_(score.get('instruments')).map(function (instrument, i) {
+                    return score.get('opus.name').replace(/,( *)/g, '$1') + ' ' 
+                        + (score.get('composer.lastname')||'') + ' ' + instrument.get('name') + ' pdf'
+                }));
                 res.render('composer-score.html', {
                     title: score.get('opus.name') + ' by ' + score.get('composer.fullname'),
+                    keywords: keywords,
                     composer: score.get('composer'),
                     opus: score.get('opus'),
                     score: score,

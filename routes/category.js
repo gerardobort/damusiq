@@ -17,6 +17,7 @@ exports.landing = function(req, res){
             res.render('category-landing.html', {
                 categories: categories,
                 title: 'Categories',
+                keywords: ['classical music composers', 'categories of composers'],
                 og_title: 'Categories',
                 scripts: [
                 ]
@@ -55,6 +56,12 @@ exports.detail = function(req, res){
                             category: category,
                             composers: composers,
                             title: category.get('name'),
+                            keywords: [category.get('name')],
+                            keywords: [
+                                category.get('name'),
+                                category.get('name') + ' timeline',
+                                category.get('name') + ' scores pdf'
+                            ],
                             og_title: category.get('name'),
                             scripts: [
                                 '/library/timeline/compiled/js/storyjs-embed.js',

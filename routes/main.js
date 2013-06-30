@@ -16,6 +16,7 @@ exports.bootstrap = function(req, res, next){
     res.locals.lang = req.lang;
     res.locals.title_prepend = 'Damusiq';
     res.locals.title = '';
+    res.locals.keywords = [];
     res.locals.og_title = 'Damusiq: Musiq library for enthusiasts!';
     res.locals.og_image = 'http://damusiq.com/images/og-image.png';
     res.locals.og_description = 'Explore, Find, Listen and Share academic Music and Download scores for free!';
