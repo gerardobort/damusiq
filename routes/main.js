@@ -19,6 +19,7 @@ exports.bootstrap = function(req, res, next){
     res.locals.keywords = [];
     res.locals.og_title = 'Damusiq: Musiq library for enthusiasts!';
     res.locals.og_image = 'http://damusiq.com/images/og-image.png';
+    res.locals.og_url = 'http://damusiq.com' + req.path;
     res.locals.og_description = 'Explore, Find, Listen and Share academic Music and Download scores for free!';
 
     var url = require('url'),
